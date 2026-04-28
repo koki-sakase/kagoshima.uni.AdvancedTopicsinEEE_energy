@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>電気エネルギー工学特論 過去問演習ドリル</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+            background-color: #f0f2f5;
+            color: #1a1a1a;
+            max-width: 950px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            line-height: 1.6;
+        }
+        h1 {
+            text-align: center;
+            color: #1a3a5f;
+            border-bottom: 3px solid #1a3a5f;
+            padding-bottom: 15px;
+            margin-bottom: 40px;
+        }
+        .section-header {
+            background-color: #1a3a5f;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            margin-top: 50px;
+            margin-bottom: 20px;
+        }
+        .qa-container {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            margin-bottom: 35px;
+            overflow: hidden;
+            border: 1px solid #d1d9e6;
+        }
+        .question-box {
+            padding: 25px;
+            background-color: #ffffff;
+        }
+        .answer-box {
+            padding: 25px;
+            background-color: #f8fbff;
+            border-top: 2px dashed #cbdcf0;
+            display: none; /* 初期非表示 */
+        }
+        .source-tag {
+            display: inline-block;
+            background-color: #e2e8f0;
+            color: #475569;
+            padding: 2px 10px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        h3 {
+            margin-top: 0;
+            color: #2c3e50;
+            font-size: 1.2em;
+        }
+        .btn-toggle {
+            background-color: #3b82f6;
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 12px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .btn-toggle:hover {
+            background-color: #2563eb;
+        }
+        .action-bar {
+            display: flex;
+            gap: 10px;
+            padding: 10px 25px;
+            background-color: #f1f5f9;
+        }
+        .btn-copy {
+            background-color: #10b981;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .btn-copy:hover {
+            background-color: #059669;
+        }
+        .math-block {
+            margin: 15px 0;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>電気エネルギー工学特論 対策問題集</h1>
+
+    <div class="section-header">
+        <h2>電力システム工学分野（川畑先生）</h2>
+    </div>
+
+    <div class="qa-container">
+        <div class="question-box" id="q1-area">
+            <span class="source-tag">出典：H28年度、H29年度、R4年度 過去問</span>
+            <h3>問題 1：有効電力と無効電力の一般式</h3>
+            <p>図のような三相3線式1回線送電線を通して無限大母線に送電している系統がある。発電機1相当たりの起電力を \(\dot{E}_s = E_s \angle \delta\)、無限大母線側の相電圧を \(\dot{E}_r = E_r \angle 0\) とするとき、1相当たりの有効電力 \(P\) 及び無効電力 \(Q\) を導出しなさい。ただし、送電線1線当たりのリアクタンスを \(X\) とし、その他の定数は無視する。</p>
+        </div>
+        <div class="action-bar">
+            <button class="btn-copy" onclick="copyAsImage('q1-area')">📸 問題をコピー</button>
+        </div>
+        <button class="btn-toggle" onclick="toggleAnswer('a1')">解答を表示 / 非表示</button>
+        <div class="answer-box" id="a1">
+            <div id="a1-area">
+                <p>電流を \(\dot{I}\) とすると、受電端電圧を基準ベクトルとして：</p>
+                <div class="math-block">
+                    \[ \dot{I} = \frac{\dot{E}_s - \dot{E}_r}{jX} = \frac{E_s(\cos \delta + j \sin \delta) - E_r}{jX} = \frac{E_s \sin \delta - j(E_s \cos \delta - E_r)}{X} \]
+                </div>
+                <p>複素電力 \(\dot{S} = P + jQ = \dot{E}_r \bar{\dot{I}}\) （受電端）より：</p>
+                <div class="math-block">
+                    \[ P = \frac{E_s E_r}{X} \sin \delta, \quad Q = \frac{E_s E_r \cos \delta - E_r^2}{X} \]
+                </div>
+            </div>
+            <button class="btn-copy" onclick="copyAsImage('a1-area')">📸 解答をコピー</button>
+        </div>
+    </div>
+
+    <div class="qa-container">
+        <div class="question-box" id="q2-area">
+            <span class="source-tag">出典：R4年度 過去問</span>
+            <h3>問題 2：送電電力の数値計算</h3>
+            <p>発電機1相当たりの起電力 \(E_s\) が 160kV、無限大母線の相電圧 \(E_r\) が 140kV、一相当たりのリアクタンス \(X\) が 400Ω のとき、以下の値を求めなさい。</p>
+            <ol>
+                <li>(i) 定態安定度極限電力（三相合計）</li>
+                <li>(ii) 位相角 \(\delta = 30^\circ\) のときの送電電力（三相合計）</li>
+            </ol>
+        </div>
+        <div class="action-bar">
+            <button class="btn-copy" onclick="copyAsImage('q2-area')">📸 問題をコピー</button>
+        </div>
+        <button class="btn-toggle" onclick="toggleAnswer('a2')">解答を表示 / 非表示</button>
+        <div class="answer-box" id="a2">
+            <div id="a2-area">
+                <p>(i) 極限電力（\(\delta = 90^\circ\) のとき最大）：</p>
+                <div class="math-block">
+                    \[ P_{max} = 3 \times \frac{160 \times 140}{400} \sin 90^\circ = 168 \text{ [MW]} \]
+                </div>
+                <p>(ii) \(\delta = 30^\circ\) のとき：</p>
+                <div class="math-block">
+                    \[ P = 3 \times \frac{160 \times 140}{400} \sin 30^\circ = 168 \times 0.5 = 84 \text{ [MW]} \]
+                </div>
+            </div>
+            <button class="btn-copy" onclick="copyAsImage('a2-area')">📸 解答をコピー</button>
+        </div>
+    </div>
+
+    <div class="qa-container">
+        <div class="question-box" id="q3-area">
+            <span class="source-tag">出典：H28年度、H29年度、H30年度、R1年度、R4年度 過去問</span>
+            <h3>問題 3：安定度向上対策の知識</h3>
+            <ol>
+                <li>(i) 定態・過渡・電圧安定度の3つすべてに効果のある対策を4つ挙げなさい。</li>
+                <li>(ii) 過渡安定度向上にのみ特に効果のある対策を2つ挙げなさい。</li>
+                <li>(iii) 電圧不安定現象（電圧崩壊）について50~100文字程度で説明しなさい。</li>
+            </ol>
+        </div>
+        <div class="action-bar">
+            <button class="btn-copy" onclick="copyAsImage('q3-area')">📸 問題をコピー</button>
+        </div>
+        <button class="btn-toggle" onclick="toggleAnswer('a3')">解答を表示 / 非表示</button>
+        <div class="answer-box" id="a3">
+            <div id="a3-area">
+                <p><strong>(i) 3つすべてに効果がある対策：</strong><br>
+                1. 高電圧送電線の導入、2. 中間開閉所の設置、3. 直列コンデンサの設置、4. 静止型無効電力補償装置(SVC)の設置</p>
+                <p><strong>(ii) 過渡安定度向上にのみ効果がある対策：</strong><br>
+                1. 調速機(ガバナ)の高速化、2. 速応励磁システムの採用（またはタービン高速バルブ制御）</p>
+                <p><strong>(iii) 電圧不安定現象の説明：</strong><br>
+                需要の増加に伴い無効電力供給が不足し、電圧維持が困難になる現象。一度電圧降下が始まると、電力一定負荷などの特性によりさらに電流が増加し、連鎖的に電圧が急落して広域停電に至る（電圧崩壊）。</p>
+            </div>
+            <button class="btn-copy" onclick="copyAsImage('a3-area')">📸 解答をコピー</button>
+        </div>
+    </div>
+
+    <div class="section-header">
+        <h2>座標変換・回路方程式分野（山本先生）</h2>
+    </div>
+
+    <div class="qa-container">
+        <div class="question-box" id="q4-area">
+            <span class="source-tag">出典：H24年度、H28年度、H29年度、R1年度、R4年度 過去問</span>
+            <h3>問題 4：三相-二相変換行列の係数</h3>
+            <p>三相-二相変換（\(uvw-\alpha\beta0\)）が絶対変換であるとき、変換行列 \(C_1\) の係数 \(k_1, k_2\) を求めなさい。</p>
+            <div class="math-block">
+                \[ C_1 = k_1 \begin{bmatrix} 1 & -1/2 & -1/2 \\ 0 & \sqrt{3}/2 & -\sqrt{3}/2 \\ k_2 & k_2 & k_2 \end{bmatrix} \]
+            </div>
+        </div>
+        <div class="action-bar">
+            <button class="btn-copy" onclick="copyAsImage('q4-area')">📸 問題をコピー</button>
+        </div>
+        <button class="btn-toggle" onclick="toggleAnswer('a4')">解答を表示 / 非表示</button>
+        <div class="answer-box" id="a4">
+            <div id="a4-area">
+                <p>絶対変換の条件は \(C_1^T C_1 = I\)（各行の長さが1かつ互いに直交）となること。</p>
+                <p>第1行より：\( k_1^2 (1^2 + (-1/2)^2 + (-1/2)^2) = k_1^2 \times \frac{3}{2} = 1 \quad \therefore k_1 = \sqrt{\frac{2}{3}} \)</p>
+                <p>第3行より：\( k_1^2 (k_2^2 + k_2^2 + k_2^2) = \frac{2}{3} \times 3k_2^2 = 2k_2^2 = 1 \quad \therefore k_2 = \frac{1}{\sqrt{2}} \)</p>
+            </div>
+            <button class="btn-copy" onclick="copyAsImage('a4-area')">📸 解答をコピー</button>
+        </div>
+    </div>
+
+    <div class="qa-container">
+        <div class="question-box" id="q5-area">
+            <span class="source-tag">出典：H23年度、H28年度、R4年度 過去問</span>
+            <h3>問題 5：RL回路の微分方程式と過渡解</h3>
+            <p>電源電圧 \(\sqrt{2}V \cos \omega t\) を \(t=0\) でRL直列負荷（抵抗 \(R\), インダクタンス \(L\)）に印加した。以下の問いに答えなさい。</p>
+            <ol>
+                <li>(i) 回路方程式（微分方程式）を立てて解きなさい（初期値 \(i(0)=0\)）。</li>
+                <li>(ii) 定常状態における電圧 \(V\), 電流 \(I\), 抵抗電圧 \(V_R\), インダクタンス電圧 \(V_L\) のフェーザ図を描きなさい。</li>
+            </ol>
+        </div>
+        <div class="action-bar">
+            <button class="btn-copy" onclick="copyAsImage('q5-area')">📸 問題をコピー</button>
+        </div>
+        <button class="btn-toggle" onclick="toggleAnswer('a5')">解答を表示 / 非表示</button>
+        <div class="answer-box" id="a5">
+            <div id="a5-area">
+                <p>(i) 方程式：\( Ri + L\frac{di}{dt} = \sqrt{2}V \cos \omega t \)</p>
+                <p>解：\( i(t) = i_s(t) + i_f(t) \)<br>
+                定常解 \( i_s(t) = \frac{\sqrt{2}V}{\sqrt{R^2 + (\omega L)^2}} \cos(\omega t - \phi) \) （ただし \(\phi = \tan^{-1}\frac{\omega L}{R}\)）<br>
+                過渡解 \( i_f(t) = A e^{-\frac{R}{L}t} \)<br>
+                \( i(0)=0 \) より \( A = -\frac{\sqrt{2}V}{|Z|} \cos(-\phi) = -\frac{\sqrt{2}V}{|Z|} \cos \phi \)</p>
+                <div class="math-block">
+                    \[ i(t) = \frac{\sqrt{2}V}{|Z|} \{ \cos(\omega t - \phi) - \cos \phi \cdot e^{-\frac{R}{L}t} \} \]
+                </div>
+                <p>(ii) フェーザ図のポイント：<br>
+                \(V\) を基準とすると、\(I\) は \(\phi\) だけ遅れる。\(V_R\) は \(I\) と同位相、\(V_L\) は \(I\) より \(90^\circ\) 進む。\(V = V_R + V_L\) のベクトル和となる。</p>
+            </div>
+            <button class="btn-copy" onclick="copyAsImage('a5-area')">📸 解答をコピー</button>
+        </div>
+    </div>
+
+    <div class="qa-container">
+        <div class="question-box" id="q6-area">
+            <span class="source-tag">出典：H30年度、R4年度 過去問</span>
+            <h3>問題 6：インピーダンス行列のdq変換</h3>
+            <p>静止座標におけるインピーダンス行列 \(Z_{\alpha\beta}\) を回転座標における \(Z_{dq}\) に変換する式を示しなさい。</p>
+            <div class="math-block">
+                \[ Z_{\alpha\beta} = \begin{bmatrix} R+pL & 0 \\ 0 & R+pL \end{bmatrix}, \quad C_2 = \begin{bmatrix} \cos \omega t & \sin \omega t \\ -\sin \omega t & \cos \omega t \end{bmatrix} \]
+            </div>
+        </div>
+        <div class="action-bar">
+            <button class="btn-copy" onclick="copyAsImage('q6-area')">📸 問題をコピー</button>
+        </div>
+        <button class="btn-toggle" onclick="toggleAnswer('a6')">解答を表示 / 非表示</button>
+        <div class="answer-box" id="a6">
+            <div id="a6-area">
+                <p>変換式：\( Z_{dq} = C_2 Z_{\alpha\beta} C_2^{-1} - C_2 L \frac{d}{dt}(C_2^{-1}) \)</p>
+                <p>計算結果：</p>
+                <div class="math-block">
+                    \[ Z_{dq} = \begin{bmatrix} R+pL & \omega L \\ -\omega L & R+pL \end{bmatrix} \]
+                </div>
+                <p>※ \(p = d/dt\)（微分演算子）。対角要素に抵抗と漏れ、非対角要素に速度起電力項（干渉項）が現れる。</p>
+            </div>
+            <button class="btn-copy" onclick="copyAsImage('a6-area')">📸 解答をコピー</button>
+        </div>
+    </div>
+
+    <script>
+        // 解答の表示・非表示切り替え
+        function toggleAnswer(id) {
+            const box = document.getElementById(id);
+            box.style.display = (box.style.display === 'block') ? 'none' : 'block';
+        }
+
+        // 画像としてコピー（html2canvasを使用）
+        async function copyAsImage(elementId) {
+            const element = document.getElementById(elementId);
+            
+            // 非表示の解答ボックスを一時的に表示して撮影
+            const parentBox = element.closest('.answer-box');
+            let originalDisplay = "";
+            if (parentBox && window.getComputedStyle(parentBox).display === 'none') {
+                originalDisplay = parentBox.style.display;
+                parentBox.style.display = 'block';
+            }
+
+            try {
+                const canvas = await html2canvas(element, {
+                    scale: 2,
+                    backgroundColor: "#ffffff",
+                    logging: false,
+                    useCORS: true
+                });
+
+                canvas.toBlob(async (blob) => {
+                    const item = new ClipboardItem({ "image/png": blob });
+                    await navigator.clipboard.write([item]);
+                    alert("画像をクリップボードにコピーしました。");
+                });
+            } catch (err) {
+                console.error("Copy failed", err);
+                alert("コピーに失敗しました。ブラウザの制限かもしれません。");
+            } finally {
+                if (originalDisplay !== "") {
+                    parentBox.style.display = originalDisplay;
+                }
+            }
+        }
+    </script>
+
+</body>
+</html>
