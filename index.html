@@ -12,13 +12,14 @@
                 displayMath: [['$$', '$$']]
             },
             svg: {
-                fontCache: 'global'
+                fontCache: 'none' // ここが最も重要な修正箇所です
             }
         };
     </script>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
-    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.min.js"></script>
     
     <style>
         body {
@@ -125,6 +126,8 @@
             border-radius: 8px;
             border: 1px solid #ddd;
         }
+        
+        /* 画像プレビュー用モーダル */
         #image-modal {
             display: none;
             position: fixed;
@@ -133,7 +136,7 @@
             top: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0,0,0,0.8);
+            background-color: rgba(0,0,0,0.85);
             overflow: auto;
         }
         .modal-content {
@@ -149,21 +152,34 @@
             width: 80%;
             max-width: 700px;
             text-align: center;
-            color: #ccc;
-            padding: 10px 0;
-            font-size: 14px;
-        }
-        .close-btn {
-            position: absolute;
-            top: 15px;
-            right: 35px;
             color: #fff;
+            padding: 15px 0;
+            font-size: 15px;
+            font-weight: bold;
+        }
+
+        /* 視認性を高めた「×」ボタン */
+        .close-btn {
+            position: fixed;
+            top: 20px;
+            right: 25px;
+            color: #fff;
+            background-color: #e74c3c;
+            width: 50px;
+            height: 50px;
+            line-height: 44px;
+            text-align: center;
+            border-radius: 50%;
             font-size: 40px;
             font-weight: bold;
             cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.6);
+            z-index: 1001;
+            transition: transform 0.2s, background-color 0.2s;
         }
         .close-btn:hover {
-            color: #bbb;
+            background-color: #c0392b;
+            transform: scale(1.1);
         }
     </style>
 </head>
@@ -173,13 +189,11 @@
         document.addEventListener("DOMContentLoaded", function() {
             function cleanCitations(node) {
                 if (node.nodeType === Node.TEXT_NODE) {
-                    // [cite: 1, 2] のような文字列を正規表現で検知して空白に置換
                     node.nodeValue = node.nodeValue.replace(/\/g, '').replace(/\[cite\]/g, '');
                 } else if (node.nodeType === Node.ELEMENT_NODE) {
                     node.childNodes.forEach(cleanCitations);
                 }
             }
-            // ページ全体のテキストをスキャンしてクリーニング実行
             cleanCitations(document.body);
         });
     </script>
@@ -187,7 +201,7 @@
     <h1>電気エネルギー工学特論 対策問題集</h1>
     <p style="text-align:center; font-size:0.9em; color:#666;">
         iPhone/iPad等で文字が崩れる場合は、「画像を生成」ボタンを押し、表示された画像を長押しして保存・コピーしてください。<br>
-        ※数式はすべて高画質SVGで描画されているため、文字化けしません。
+        ※数式はすべて高画質SVGで描画されており、斜体（イタリック）が維持されます。
     </p>
 
     <div class="section-header">
@@ -207,15 +221,15 @@
                     <text x="60" y="25" text-anchor="middle" font-size="14" fill="#333">発電機</text>
                     <line x1="85" y1="60" x2="180" y2="60" stroke="#333" stroke-width="2"/>
                     <path d="M 180 60 Q 190 40 200 60 Q 210 40 220 60 Q 230 40 240 60 Q 250 40 260 60" fill="none" stroke="#333" stroke-width="2"/>
-                    <text x="220" y="35" text-anchor="middle" font-size="16" font-style="italic" fill="#333">X</text>
+                    <text x="220" y="35" text-anchor="middle" font-size="16" font-family="'Times New Roman', serif" font-style="italic" fill="#333">X</text>
                     <line x1="260" y1="60" x2="380" y2="60" stroke="#333" stroke-width="2"/>
                     <line x1="380" y1="20" x2="380" y2="100" stroke="#333" stroke-width="3"/>
                     <path d="M 380 25 L 395 15 M 380 40 L 395 30 M 380 55 L 395 45 M 380 70 L 395 60 M 380 85 L 395 75 M 380 100 L 395 90" stroke="#333" stroke-width="1.5"/>
                     <text x="405" y="65" font-size="14" fill="#333">無限大母線</text>
                     <line x1="120" y1="120" x2="120" y2="70" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
-                    <text x="130" y="115" font-size="14" font-style="italic" fill="#333">E<tspan baseline-shift="sub" font-size="10">s</tspan> = E<tspan baseline-shift="sub" font-size="10">s</tspan>∠δ</text>
+                    <text x="130" y="115" font-size="14" font-family="'Times New Roman', serif" font-style="italic" fill="#333">E<tspan baseline-shift="sub" font-size="10" font-style="normal">s</tspan> = E<tspan baseline-shift="sub" font-size="10" font-style="normal">s</tspan><tspan font-style="normal">∠δ</tspan></text>
                     <line x1="360" y1="120" x2="360" y2="70" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
-                    <text x="370" y="115" font-size="14" font-style="italic" fill="#333">E<tspan baseline-shift="sub" font-size="10">r</tspan> = E<tspan baseline-shift="sub" font-size="10">r</tspan>∠0</text>
+                    <text x="370" y="115" font-size="14" font-family="'Times New Roman', serif" font-style="italic" fill="#333">E<tspan baseline-shift="sub" font-size="10" font-style="normal">r</tspan> = E<tspan baseline-shift="sub" font-size="10" font-style="normal">r</tspan><tspan font-style="normal">∠0</tspan></text>
                     <defs>
                         <marker id="arrow" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto-start-reverse">
                             <path d="M 0 0 L 10 5 L 0 10 z" fill="#333"/>
@@ -498,18 +512,16 @@
             }
 
             try {
-                // MathJax描画(SVG)の完了を確実に待ってから撮影
-                await MathJax.typesetPromise();
-                
-                const canvas = await html2canvas(element, {
-                    scale: 2,
+                // html-to-imageを使って画像化（文字化け対策済み）
+                const dataUrl = await htmlToImage.toPng(element, {
                     backgroundColor: "#ffffff",
-                    logging: false,
-                    useCORS: true,
-                    allowTaint: true
+                    pixelRatio: 2,
+                    style: {
+                        transform: 'scale(1)',
+                        transformOrigin: 'top left'
+                    }
                 });
 
-                const dataUrl = canvas.toDataURL("image/png");
                 const modal = document.getElementById("image-modal");
                 const modalImg = document.getElementById("popup-image");
                 modalImg.src = dataUrl;
