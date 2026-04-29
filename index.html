@@ -4,16 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>電気エネルギー工学特論 過去問演習ドリル</title>
+
     <script>
         window.MathJax = {
             tex: {
                 inlineMath: [['$', '$']],
                 displayMath: [['$$', '$$']]
+            },
+            svg: {
+                fontCache: 'global'
             }
         };
     </script>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     
     <style>
@@ -165,9 +169,25 @@
 </head>
 <body>
 
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            function cleanCitations(node) {
+                if (node.nodeType === Node.TEXT_NODE) {
+                    // [cite: 1, 2] のような文字列を正規表現で検知して空白に置換
+                    node.nodeValue = node.nodeValue.replace(/\/g, '').replace(/\[cite\]/g, '');
+                } else if (node.nodeType === Node.ELEMENT_NODE) {
+                    node.childNodes.forEach(cleanCitations);
+                }
+            }
+            // ページ全体のテキストをスキャンしてクリーニング実行
+            cleanCitations(document.body);
+        });
+    </script>
+
     <h1>電気エネルギー工学特論 対策問題集</h1>
     <p style="text-align:center; font-size:0.9em; color:#666;">
-        iPhone/iPad等で文字が崩れる場合は、「画像を生成」ボタンを押し、表示された画像を長押しして保存・コピーしてください。
+        iPhone/iPad等で文字が崩れる場合は、「画像を生成」ボタンを押し、表示された画像を長押しして保存・コピーしてください。<br>
+        ※数式はすべて高画質SVGで描画されているため、文字化けしません。
     </p>
 
     <div class="section-header">
@@ -178,7 +198,7 @@
         <div class="question-box" id="q1-area">
             <span class="source-tag">出典：H28年度、H29年度、R4年度 過去問</span>
             <h3>問題 1：有効電力と無効電力の一般式</h3>
-            <p>右図に示されるような三相3線式1回線送電線により無限大母線へ電力を送る系統を考える。発電機における1相分の起電力を $\dot{E}_s = E_s \angle \delta$、無限大母線側の相電圧を $\dot{E}_r = E_r \angle 0$ と規定したとき、1相分の有効電力 $P$ と無効電力 $Q$ の導出式を示せ。なお、送電線1線分のリアクタンスは $X$ とし、それ以外のパラメータは無視すること。</p>
+            <p>図のような三相3線式1回線送電線を通して無限大母線に送電している系統がある。発電機1相当たりの起電力を $\dot{E}_s = E_s \angle \delta$、無限大母線側の相電圧を $\dot{E}_r = E_r \angle 0$ とするとき、1相当たりの有効電力 $P$ 及び無効電力 $Q$ を導出しなさい。ただし、送電線1線当たりのリアクタンスを $X$ とし、その他の定数は無視する。</p>
             
             <div class="diagram-container">
                 <svg width="450" height="150" viewBox="0 0 450 150" xmlns="http://www.w3.org/2000/svg">
@@ -210,11 +230,11 @@
         <button class="btn-toggle" onclick="toggleAnswer('a1')">解答を表示 / 非表示</button>
         <div class="answer-box" id="a1">
             <div id="a1-area">
-                <p>系統に流れる電流ベクトルを $\dot{I}$ と仮定し、受電端の電圧を基準ベクトルに設定すると：</p>
+                <p>電流を $\dot{I}$ とすると、受電端電圧を基準ベクトルとして：</p>
                 <div class="math-block">
                     $$\dot{I} = \frac{\dot{E}_s - \dot{E}_r}{jX} = \frac{E_s(\cos \delta + j \sin \delta) - E_r}{jX} = \frac{E_s \sin \delta - j(E_s \cos \delta - E_r)}{X}$$
                 </div>
-                <p>受電端での複素電力の式 $\dot{S} = P + jQ = \dot{E}_r \bar{\dot{I}}$ を用いて整理すると：</p>
+                <p>複素電力 $\dot{S} = P + jQ = \dot{E}_r \bar{\dot{I}}$ （受電端）より：</p>
                 <div class="math-block">
                     $$P = \frac{E_s E_r}{X} \sin \delta, \quad Q = \frac{E_s E_r \cos \delta - E_r^2}{X}$$
                 </div>
@@ -227,9 +247,9 @@
         <div class="question-box" id="q2-area">
             <span class="source-tag">出典：H29年度、R4年度 過去問</span>
             <h3>問題 2：送電電力の数値計算</h3>
-            <p><strong>【ケースA】</strong>発電機の1相分起電力 $E_s$ が 160kV、無限大母線の相電圧 $E_r$ が 140kV、1相分リアクタンス $X$ が 400Ω の場合。</p>
-            <p><strong>【ケースB】</strong>発電機の起電力 $E_s$ が 77kV、無限大母線相電圧 $E_r$ が 70kV、リアクタンス $X$ が 60Ω の場合。</p>
-            <p>それぞれのケースについて、(i) 三相トータルの定態安定度極限電力、および (ii) 相角差 $\delta = 30^\circ$ のときの三相送電電力を計算せよ。</p>
+            <p><strong>【パターンA】</strong>発電機1相当たりの起電力 $E_s$ が 160kV、無限大母線の相電圧 $E_r$ が 140kV、一相当たりのリアクタンス $X$ が 400Ω のとき</p>
+            <p><strong>【パターンB】</strong>発電機1相当たりの起電力 $E_s$ が 77kV、無限大母線の相電圧 $E_r$ が 70kV、一相当たりのリアクタンス $X$ が 60Ω のとき</p>
+            <p>各パターンにおいて、(i) 定態安定度極限電力（三相合計）と、(ii) 位相角 $\delta = 30^\circ$ のときの送電電力（三相合計）を求めなさい。</p>
         </div>
         <div class="action-bar">
             <button class="btn-copy" onclick="generateAndShowImage('q2-area')">📸 画像を生成 (コピー用)</button>
@@ -237,11 +257,11 @@
         <button class="btn-toggle" onclick="toggleAnswer('a2')">解答を表示 / 非表示</button>
         <div class="answer-box" id="a2">
             <div id="a2-area">
-                <p>定態安定度極限電力は相角差 $\delta = 90^\circ$ の条件で最大化する。三相電力の基本式 $P = 3 \times \frac{E_s E_r}{X} \sin \delta$ に各値を代入して解く。</p>
-                <p><strong>【ケースAの算出結果】</strong><br>
+                <p>定態安定度極限電力は $\delta = 90^\circ$ で最大となる。三相電力は $P = 3 \times \frac{E_s E_r}{X} \sin \delta$ で計算する。</p>
+                <p><strong>【パターンAの解答】</strong><br>
                 (i) $P_{max} = 3 \times \frac{160 \times 140}{400} \sin 90^\circ = 168 \text{ [MW]}$<br>
                 (ii) $P = 3 \times \frac{160 \times 140}{400} \sin 30^\circ = 84 \text{ [MW]}$</p>
-                <p><strong>【ケースBの算出結果】</strong><br>
+                <p><strong>【パターンBの解答】</strong><br>
                 (i) $P_{max} = 3 \times \frac{77 \times 70}{60} \sin 90^\circ = 269.5 \text{ [MW]}$<br>
                 (ii) $P = 3 \times \frac{77 \times 70}{60} \sin 30^\circ = 134.75 \text{ [MW]}$</p>
             </div>
@@ -253,10 +273,10 @@
         <div class="question-box" id="q3-area">
             <span class="source-tag">出典：H28年度 過去問</span>
             <h3>問題 3：中間開閉所を設置した系統の送電電力</h3>
-            <p>中間開閉所が組み込まれた三相3線式2回線送電線を用い、無限大母線へ送電を行うモデルを想定する。次の2つの条件下において、1相分の有効電力 $P$ を求める計算式を記述せよ。ここで、発電機のリアクタンスを $X_d'$、送電線1回線・1線分のリアクタンスを $X$ と置く。</p>
+            <p>三相3線式2回線送電線を通して無限大母線に送電している中間開閉所を設置した系統がある。以下の各条件における1相当たりの有効電力 $P$ を示しなさい。ただし、発電機のリアクタンスを $X_d'$、送電線1回線1線当たりのリアクタンスを $X$ とする。</p>
             <ol>
-                <li>(i) 全区間で1回線送電を行う時（実質的に中間開閉所が存在しない状態）</li>
-                <li>(ii) 一部区間でのみ1回線送電となる時（中間開閉所が存在し機能している状態）</li>
+                <li>(i) 全区間1回線送電時（中間開閉所なし）</li>
+                <li>(ii) 一部区間1回線送電時（中間開閉所あり）</li>
             </ol>
         </div>
         <div class="action-bar">
@@ -265,17 +285,17 @@
         <button class="btn-toggle" onclick="toggleAnswer('a3')">解答を表示 / 非表示</button>
         <div class="answer-box" id="a3">
             <div id="a3-area">
-                <p>回路全体の合成リアクタンスを求めてから算出を行う。</p>
-                <p>**(i) 全区間1回線送電を行うケース：**<br>
-                送電線部分のリアクタンスは $X$ となるため、全体の合成値は $X_d' + X$ になる。従って求める電力は、</p>
+                <p>全リアクタンスを合成して計算する。</p>
+                <p>**(i) 全区間1回線送電時（中間開閉所なし）：**<br>
+                送電線のリアクタンスは $X$ となるため、全体の合成リアクタンスは $X_d' + X$。よって送電電力は、</p>
                 <div class="math-block">
                     $$P = \frac{E_s E_r}{X_d' + X} \sin \delta$$
                 </div>
-                <p>**(ii) 一部区間1回線送電となるケース：**<br>
-                送電線が中間開閉所によって半分に分割されていると仮定する（各区間1回線あたりのリアクタンスは $X/2$）。<br>
-                問題のない健全区間は2回線並列状態なので、合成リアクタンスは $\frac{X/2}{2} = X/4$ である。<br>
-                1回線が開放された事故区間は $X/2$ のままであるため、送電線トータルのリアクタンスは $X/4 + X/2 = 3X/4$ と計算される。<br>
-                以上より求める電力は、</p>
+                <p>**(ii) 一部区間1回線送電時（中間開閉所あり）：**<br>
+                送電線が中間開閉所で2つに分割されているとする（各区間の1回線あたりリアクタンスは $X/2$）。<br>
+                健全な区間は2回線並列なので合成リアクタンスは $\frac{X/2}{2} = X/4$。<br>
+                事故等で1回線が開放されている区間は $X/2$ のまま。よって送電線全体のリアクタンスは $X/4 + X/2 = 3X/4$ となる。<br>
+                したがって送電電力は、</p>
                 <div class="math-block">
                     $$P = \frac{E_s E_r}{X_d' + \frac{3}{4}X} \sin \delta$$
                 </div>
@@ -289,9 +309,9 @@
             <span class="source-tag">出典：H28年度、H29年度、H30年度、R1年度、R4年度 過去問</span>
             <h3>問題 4：安定度向上対策の知識</h3>
             <ol>
-                <li>(i) 定態安定度、過渡安定度、および電圧安定度という3つの指標すべてに対して改善効果が見込まれる対策を4つ挙げよ。</li>
-                <li>(ii) 主に過渡安定度の改善に対して特化して効果を発揮する対策を2つ挙げよ。</li>
-                <li>(iii) 「電圧崩壊（電圧不安定現象）」がどのような現象であるか、50〜100文字の範囲で記述せよ。</li>
+                <li>(i) 定態・過渡・電圧安定度の3つすべてに効果のある対策を4つ挙げなさい。</li>
+                <li>(ii) 過渡安定度向上にのみ特に効果のある対策を2つ挙げなさい。</li>
+                <li>(iii) 電圧不安定現象（電圧崩壊）について50~100文字程度で説明しなさい。</li>
             </ol>
         </div>
         <div class="action-bar">
@@ -300,17 +320,17 @@
         <button class="btn-toggle" onclick="toggleAnswer('a4')">解答を表示 / 非表示</button>
         <div class="answer-box" id="a4">
             <div id="a4-area">
-                <p>**(i) 3要素すべてに改善効果がある対策：**<br>
-                1. 送電線の高電圧化を実施する<br>
-                2. 中間開閉所を新たに設ける<br>
-                3. 直列コンデンサを系統に接続する<br>
-                4. SVC（静止型無効電力補償装置）を導入する</p>
-                <p>**(ii) もっぱら過渡安定度に効果を示す対策：**<br>
-                1. ガバナ（調速機）の応答速度を上げる<br>
-                2. タービンの高速バルブ制御を取り入れる<br>
-                （※速応励磁方式の採用などを解答しても可）</p>
-                <p>**(iii) 電圧崩壊現象の概要：**<br>
-                電力需要の急増に対して無効電力の供給が追いつかず、電圧が維持できなくなる現象のこと。一度電圧が低下し始めると、電力一定負荷の性質によりさらに電流が増し、連鎖的に電圧が急落して広域停電に繋がる。</p>
+                <p>**(i) 3つすべてに効果がある対策：**<br>
+                1. 高電圧送電線の導入 <br>
+                2. 中間開閉所の設置 <br>
+                3. 直列コンデンサの設置 <br>
+                4. 静止型無効電力補償装置(SVC)の設置 </p>
+                <p>**(ii) 過渡安定度向上にのみ効果がある対策：**<br>
+                1. 調速機(ガバナ)の高速化 <br>
+                2. タービン高速バルブ制御 <br>
+                （※速応励磁の採用も可）</p>
+                <p>**(iii) 電圧不安定現象の説明：**<br>
+                需要の増加に伴い無効電力供給が不足し、電圧維持が困難になる現象。一度電圧降下が始まると、電力一定負荷などの特性によりさらに電流が増加し、連鎖的に電圧が急落して広域停電に至る（電圧崩壊）。</p>
             </div>
             <button class="btn-copy" onclick="generateAndShowImage('a4-area')">📸 画像を生成 (コピー用)</button>
         </div>
@@ -324,9 +344,9 @@
         <div class="question-box" id="q5-area">
             <span class="source-tag">出典：H23年度 過去問</span>
             <h3>問題 5：空間電圧ベクトルの導出</h3>
-            <p>時刻 $t=0$ においてスイッチSを投入し、平衡三相電圧 $e_a, e_b, e_c$ を、1相あたり抵抗 $r$ とインダクタンス $L$ を持つ三相平衡負荷へ印加した。各相の電圧を $e_a = \sqrt{2}V \cos \omega t$、$e_b = \sqrt{2}V \cos(\omega t - \frac{2\pi}{3})$、$e_c = \sqrt{2}V \cos(\omega t - \frac{4\pi}{3})$ とする。</p>
-            <p>このときの静止座標系における空間電圧ベクトル $\underline{v}_{qds}^s$ を導出せよ。<br>
-            ※使用する空間ベクトルの定義式：$\underline{f}_{qds}^s = \frac{2}{3}(f_a + \underline{a}f_b + \underline{a}^2 f_c)$, ここで $\underline{a} = e^{j\frac{2\pi}{3}}$</p>
+            <p>平衡三相電圧 $e_a, e_b, e_c$ を $t=0$ においてスイッチSを閉じて、1相分の抵抗 $r$、インダクタンス $L$ の三相平衡負荷に加えた。相電圧は $e_a = \sqrt{2}V \cos \omega t$, $e_b = \sqrt{2}V \cos(\omega t - \frac{2\pi}{3})$, $e_c = \sqrt{2}V \cos(\omega t - \frac{4\pi}{3})$ とする。</p>
+            <p>静止座標における空間電圧ベクトル $\underline{v}_{qds}^s$ を求めなさい。<br>
+            ※空間ベクトルの定義式：$\underline{f}_{qds}^s = \frac{2}{3}(f_a + \underline{a}f_b + \underline{a}^2 f_c)$, $\underline{a} = e^{j\frac{2\pi}{3}}$</p>
         </div>
         <div class="action-bar">
             <button class="btn-copy" onclick="generateAndShowImage('q5-area')">📸 画像を生成 (コピー用)</button>
@@ -334,15 +354,15 @@
         <button class="btn-toggle" onclick="toggleAnswer('a5')">解答を表示 / 非表示</button>
         <div class="answer-box" id="a5">
             <div id="a5-area">
-                <p>オイラーの公式 $\cos \theta = \frac{e^{j\theta} + e^{-j\theta}}{2}$ を活用して定義式に展開する。</p>
+                <p>オイラーの公式 $\cos \theta = \frac{e^{j\theta} + e^{-j\theta}}{2}$ を用いて定義式に代入する。</p>
                 <div class="math-block">
                     $$\underline{v}_{qds}^s = \frac{2}{3} \times \frac{\sqrt{2}V}{2} \left[ (e^{j\omega t} + e^{-j\omega t}) + e^{j\frac{2\pi}{3}}(e^{j(\omega t - \frac{2\pi}{3})} + e^{-j(\omega t - \frac{2\pi}{3})}) + e^{j\frac{4\pi}{3}}(e^{j(\omega t - \frac{4\pi}{3})} + e^{-j(\omega t - \frac{4\pi}{3})}) \right]$$
                 </div>
-                <p>$e^{j\omega t}$ を含む項と $e^{-j\omega t}$ を含む項でくくり直すと、</p>
+                <p>$e^{j\omega t}$ の項と $e^{-j\omega t}$ の項に整理すると、</p>
                 <div class="math-block">
                     $$= \frac{\sqrt{2}V}{3} \left[ e^{j\omega t}(1 + 1 + 1) + e^{-j\omega t}(1 + e^{j\frac{4\pi}{3}} + e^{j\frac{8\pi}{3}}) \right]$$
                 </div>
-                <p>ここでベクトルオペレータの性質 $1 + \underline{a} + \underline{a}^2 = 0$ により、後半の $e^{-j\omega t}$ の係数は $1 + e^{j\frac{4\pi}{3}} + e^{j\frac{2\pi}{3}} = 0$ となって消去される。</p>
+                <p>ここで $1 + \underline{a} + \underline{a}^2 = 0$ より、後半の $e^{-j\omega t}$ の係数は $1 + e^{j\frac{4\pi}{3}} + e^{j\frac{2\pi}{3}} = 0$ となる。</p>
                 <div class="math-block">
                     $$\underline{v}_{qds}^s = \frac{\sqrt{2}V}{3} \times 3 e^{j\omega t} = \sqrt{2}V e^{j\omega t}$$
                 </div>
@@ -355,7 +375,7 @@
         <div class="question-box" id="q6-area">
             <span class="source-tag">出典：H24年度、H28年度、H29年度、R1年度、R4年度 過去問</span>
             <h3>問題 6：三相-二相変換行列の係数</h3>
-            <p>以下の式は、三相から二相への変換（$uvw$ から $\alpha\beta0$ への絶対変換）を表す変換行列 $C_1$ である。この $C_1$ が電力不変の絶対変換となるための条件から、$k_1 > 0$ および $k_2 > 0$ を満たす各係数 $k_1, k_2$ の値を計算せよ。</p>
+            <p>三相-二相変換（$uvw-\alpha\beta0$ の絶対変換）の変換行列 $C_1$ を次に示す。$C_1$ が絶対変換であり、$k_1, k_2 > 0$ であるとき、係数 $k_1, k_2$ を求めなさい。</p>
             <div class="math-block">
                 $$C_1 = k_1 \begin{bmatrix} 1 & -1/2 & -1/2 \\ 0 & \sqrt{3}/2 & -\sqrt{3}/2 \\ k_2 & k_2 & k_2 \end{bmatrix}$$
             </div>
@@ -366,9 +386,9 @@
         <button class="btn-toggle" onclick="toggleAnswer('a6')">解答を表示 / 非表示</button>
         <div class="answer-box" id="a6">
             <div id="a6-area">
-                <p>変換行列が直交条件 $C_1^T C_1 = I$ を満たす必要があるため、各行のベクトルのノルム（二乗和）が1になるように設定する。</p>
-                <p>1行目についての計算：$k_1^2 (1^2 + (-1/2)^2 + (-1/2)^2) = k_1^2 \times \frac{3}{2} = 1 \quad \therefore k_1 = \sqrt{\frac{2}{3}}$</p>
-                <p>3行目についての計算：$k_1^2 (k_2^2 + k_2^2 + k_2^2) = \frac{2}{3} \times 3k_2^2 = 2k_2^2 = 1 \quad \therefore k_2 = \frac{1}{\sqrt{2}}$</p>
+                <p>絶対変換の条件は $C_1^T C_1 = I$（各行の長さの二乗和が1かつ互いに直交）となること。</p>
+                <p>第1行より：$k_1^2 (1^2 + (-1/2)^2 + (-1/2)^2) = k_1^2 \times \frac{3}{2} = 1 \quad \therefore k_1 = \sqrt{\frac{2}{3}}$</p>
+                <p>第3行より：$k_1^2 (k_2^2 + k_2^2 + k_2^2) = \frac{2}{3} \times 3k_2^2 = 2k_2^2 = 1 \quad \therefore k_2 = \frac{1}{\sqrt{2}}$</p>
             </div>
             <button class="btn-copy" onclick="generateAndShowImage('a6-area')">📸 画像を生成 (コピー用)</button>
         </div>
@@ -378,11 +398,11 @@
         <div class="question-box" id="q7-area">
             <span class="source-tag">出典：H28年度 過去問</span>
             <h3>問題 7：三相電圧のdq座標変換</h3>
-            <p>以下の各相電圧値を、dq座標系上の電圧成分 $v_d$ と $v_q$ にそれぞれ変換せよ。</p>
+            <p>次の三相電圧を dq座標における電圧 $v_d, v_q$ に変換しなさい。</p>
             <div class="math-block">
                 $$v_u = +E/2, \quad v_v = +E/2, \quad v_w = -E$$
             </div>
-            <p>なお、三相からdqへの変換行列 $C_3$ としては以下の式を用いること。</p>
+            <p>ただし、三相-dq変換の変換行列 $C_3$ は以下のものを用いる。</p>
             <div class="math-block">
                 $$C_3 = \sqrt{\frac{2}{3}} \begin{bmatrix} \cos \omega t & \cos(\omega t - 120^\circ) & \cos(\omega t + 120^\circ) \\ -\sin \omega t & -\sin(\omega t - 120^\circ) & -\sin(\omega t + 120^\circ) \\ 1/\sqrt{2} & 1/\sqrt{2} & 1/\sqrt{2} \end{bmatrix}$$
             </div>
@@ -393,12 +413,12 @@
         <button class="btn-toggle" onclick="toggleAnswer('a7')">解答を表示 / 非表示</button>
         <div class="answer-box" id="a7">
             <div id="a7-area">
-                <p>行列の積 $[v_d, v_q, v_0]^T = C_3 [v_u, v_v, v_w]^T$ を実行して解を求める。</p>
-                <p>$v_d$ についての立式：</p>
+                <p>ベクトル $[v_d, v_q, v_0]^T = C_3 [v_u, v_v, v_w]^T$ を計算する。</p>
+                <p>$v_d$ の計算：</p>
                 <div class="math-block">
                     $$v_d = \sqrt{\frac{2}{3}} \left\{ \frac{E}{2} \cos \omega t + \frac{E}{2} \cos(\omega t - 120^\circ) - E \cos(\omega t + 120^\circ) \right\}$$
                 </div>
-                <p>加法定理などの三角関数の公式を適用して整理することで答えが求まる（$v_q$ についても同様に行列の2行目を掛けて処理する）。</p>
+                <p>加法定理などを用いて三角関数を整理すると求まる（$v_q$ についても同様に2行目の要素を掛け合わせて計算する）。</p>
             </div>
             <button class="btn-copy" onclick="generateAndShowImage('a7-area')">📸 画像を生成 (コピー用)</button>
         </div>
@@ -408,7 +428,7 @@
         <div class="question-box" id="q8-area">
             <span class="source-tag">出典：H23年度、H28年度、H29年度、R4年度 過去問</span>
             <h3>問題 8：RL回路の微分方程式と過渡解</h3>
-            <p>RL直列回路に関する微分方程式 $Ri + L\frac{di}{dt} = \sqrt{2}V \cos \omega t$ の解を求めよ。初期条件は時刻 $t=0$ において電流 $i=0$ とする。</p>
+            <p>微分方程式 $Ri + L\frac{di}{dt} = \sqrt{2}V \cos \omega t$ を解きなさい。ただし、$t=0$ のとき $i=0$ であるとする。</p>
         </div>
         <div class="action-bar">
             <button class="btn-copy" onclick="generateAndShowImage('q8-area')">📸 画像を生成 (コピー用)</button>
@@ -416,10 +436,10 @@
         <button class="btn-toggle" onclick="toggleAnswer('a8')">解答を表示 / 非表示</button>
         <div class="answer-box" id="a8">
             <div id="a8-area">
-                <p>求める電流 $i(t)$ は、定常状態の解 $i_s(t)$ に過渡状態の解 $i_f(t)$ を加えた形となる。</p>
-                <p>定常解部分：$i_s(t) = \frac{\sqrt{2}V}{\sqrt{R^2 + (\omega L)^2}} \cos(\omega t - \phi)$ （ここで $\phi = \tan^{-1}\frac{\omega L}{R}$ とする）<br>
-                過渡解部分：$i_f(t) = A e^{-\frac{R}{L}t}$</p>
-                <p>条件 $i(0)=0$ を当てはめると $A = -\frac{\sqrt{2}V}{\sqrt{R^2 + (\omega L)^2}} \cos(-\phi)$ と定まる。</p>
+                <p>解 $i(t)$ は定常解 $i_s(t)$ と過渡解 $i_f(t)$ の和で表される。</p>
+                <p>定常解：$i_s(t) = \frac{\sqrt{2}V}{\sqrt{R^2 + (\omega L)^2}} \cos(\omega t - \phi)$ （ただし $\phi = \tan^{-1}\frac{\omega L}{R}$）<br>
+                過渡解：$i_f(t) = A e^{-\frac{R}{L}t}$</p>
+                <p>初期条件 $i(0)=0$ より $A = -\frac{\sqrt{2}V}{\sqrt{R^2 + (\omega L)^2}} \cos(-\phi)$。</p>
                 <div class="math-block">
                     $$i(t) = \frac{\sqrt{2}V}{\sqrt{R^2 + (\omega L)^2}} \left\{ \cos(\omega t - \phi) - \cos(-\phi) e^{-\frac{R}{L}t} \right\}$$
                 </div>
@@ -432,7 +452,7 @@
         <div class="question-box" id="q9-area">
             <span class="source-tag">出典：R1年度 過去問</span>
             <h3>問題 9：RC回路の微分方程式と過渡解</h3>
-            <p>次のRC直列回路の微分（積分）方程式を解け。$Ri + \frac{1}{C}\int i dt = \sqrt{2}V \sin \omega t$</p>
+            <p>微分方程式 $Ri + \frac{1}{C}\int i dt = \sqrt{2}V \sin \omega t$ を解きなさい。</p>
         </div>
         <div class="action-bar">
             <button class="btn-copy" onclick="generateAndShowImage('q9-area')">📸 画像を生成 (コピー用)</button>
@@ -440,16 +460,16 @@
         <button class="btn-toggle" onclick="toggleAnswer('a9')">解答を表示 / 非表示</button>
         <div class="answer-box" id="a9">
             <div id="a9-area">
-                <p>まず両辺を時間 $t$ で微分し、形を整える。</p>
+                <p>両辺を $t$ で微分すると、</p>
                 <div class="math-block">
                     $$R\frac{di}{dt} + \frac{1}{C}i = \sqrt{2}V \omega \cos \omega t$$
                 </div>
-                <p>最終的な解 $i(t)$ は定常解 $i_s(t)$ と過渡解 $i_f(t)$ の合成で表現される。</p>
-                <p>定常解：フェーザ計算によってインピーダンスを $Z = R - j\frac{1}{\omega C}$ と置けるため、<br>
-                $i_s(t) = \frac{\sqrt{2}V}{\sqrt{R^2 + (\frac{1}{\omega C})^2}} \sin(\omega t - \phi)$ （ここで $\phi = \tan^{-1}\frac{-1/\omega C}{R}$）</p>
-                <p>過渡解：特性方程式 $Rp + \frac{1}{C} = 0$ から $p = -\frac{1}{RC}$ が得られる。したがって、<br>
+                <p>解 $i(t)$ は定常解 $i_s(t)$ と過渡解 $i_f(t)$ の和で表される。</p>
+                <p>定常解：フェーザ法によりインピーダンスは $Z = R - j\frac{1}{\omega C}$ となるため、<br>
+                $i_s(t) = \frac{\sqrt{2}V}{\sqrt{R^2 + (\frac{1}{\omega C})^2}} \sin(\omega t - \phi)$ （ただし $\phi = \tan^{-1}\frac{-1/\omega C}{R}$）</p>
+                <p>過渡解：特性方程式 $Rp + \frac{1}{C} = 0$ より $p = -\frac{1}{RC}$。よって、<br>
                 $i_f(t) = A e^{-\frac{1}{RC}t}$</p>
-                <p>この後、初期条件（$t=0$ でのコンデンサの初期電荷など）を用いて未定定数 $A$ を決定すれば完了である。</p>
+                <p>初期条件（$t=0$ でコンデンサの電荷0など）から定数 $A$ を決定する。</p>
             </div>
             <button class="btn-copy" onclick="generateAndShowImage('a9-area')">📸 画像を生成 (コピー用)</button>
         </div>
@@ -469,15 +489,18 @@
 
         async function generateAndShowImage(elementId) {
             const element = document.getElementById(elementId);
-            
             const parentBox = element.closest('.answer-box');
             let originalDisplay = "";
+            
             if (parentBox && window.getComputedStyle(parentBox).display === 'none') {
                 originalDisplay = parentBox.style.display;
                 parentBox.style.display = 'block';
             }
 
             try {
+                // MathJax描画(SVG)の完了を確実に待ってから撮影
+                await MathJax.typesetPromise();
+                
                 const canvas = await html2canvas(element, {
                     scale: 2,
                     backgroundColor: "#ffffff",
