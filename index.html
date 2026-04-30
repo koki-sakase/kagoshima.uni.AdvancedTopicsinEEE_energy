@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>電気エネルギー工学特論 過去問演習ドリル</title>
 
+    <!-- 数式をベクター画像(SVG)として描画し、画像コピー時の文字化けを完全防止する -->
     <script>
         window.MathJax = {
             tex: {
@@ -12,13 +13,14 @@
                 displayMath: [['$$', '$$']]
             },
             svg: {
-                fontCache: 'none' // ここが最も重要な修正箇所です
+                fontCache: 'none' // 文字化け・ローマン体化を防ぐ必須設定
             }
         };
     </script>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
     
+    <!-- 高精度な画像化ライブラリ -->
     <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.min.js"></script>
     
     <style>
@@ -127,6 +129,23 @@
             border: 1px solid #ddd;
         }
         
+        table.stability-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 0.9em;
+            background-color: #fff;
+        }
+        table.stability-table th, table.stability-table td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+        }
+        table.stability-table th {
+            background-color: #e9ecef;
+            color: #2c3e50;
+        }
+
         /* 画像プレビュー用モーダル */
         #image-modal {
             display: none;
@@ -185,6 +204,7 @@
 </head>
 <body>
 
+    <!-- システム強制挿入タグの自動クリーニング -->
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             function cleanCitations(node) {
@@ -204,10 +224,12 @@
         ※数式はすべて高画質SVGで描画されており、斜体（イタリック）が維持されます。
     </p>
 
+    <!-- 川畑先生セクション -->
     <div class="section-header">
         <h2>電力システム工学分野（川畑先生）</h2>
     </div>
 
+    <!-- Q1 -->
     <div class="qa-container">
         <div class="question-box" id="q1-area">
             <span class="source-tag">出典：H28年度、H29年度、R4年度 過去問</span>
@@ -257,6 +279,7 @@
         </div>
     </div>
 
+    <!-- Q2 -->
     <div class="qa-container">
         <div class="question-box" id="q2-area">
             <span class="source-tag">出典：H29年度、R4年度 過去問</span>
@@ -283,6 +306,7 @@
         </div>
     </div>
 
+    <!-- Q3 -->
     <div class="qa-container">
         <div class="question-box" id="q3-area">
             <span class="source-tag">出典：H28年度 過去問</span>
@@ -318,6 +342,7 @@
         </div>
     </div>
 
+    <!-- Q4 -->
     <div class="qa-container">
         <div class="question-box" id="q4-area">
             <span class="source-tag">出典：H28年度、H29年度、H30年度、R1年度、R4年度 過去問</span>
@@ -325,7 +350,7 @@
             <ol>
                 <li>(i) 定態・過渡・電圧安定度の3つすべてに効果のある対策を4つ挙げなさい。</li>
                 <li>(ii) 過渡安定度向上にのみ特に効果のある対策を2つ挙げなさい。</li>
-                <li>(iii) 電圧不安定現象（電圧崩壊）について50~100文字程度で説明しなさい。</li>
+                <li>(iii) 各種安定度向上対策とその効果について、表を用いてまとめなさい。</li>
             </ol>
         </div>
         <div class="action-bar">
@@ -343,17 +368,68 @@
                 1. 調速機(ガバナ)の高速化 <br>
                 2. タービン高速バルブ制御 <br>
                 （※速応励磁の採用も可）</p>
-                <p>**(iii) 電圧不安定現象の説明：**<br>
-                需要の増加に伴い無効電力供給が不足し、電圧維持が困難になる現象。一度電圧降下が始まると、電力一定負荷などの特性によりさらに電流が増加し、連鎖的に電圧が急落して広域停電に至る（電圧崩壊）。</p>
+                <p>**(iii) 各種安定度向上対策とその効果：**</p>
+                <table class="stability-table">
+                    <tr>
+                        <th>安定化対策</th>
+                        <th>定態安定度</th>
+                        <th>過渡安定度</th>
+                        <th>電圧安定性</th>
+                    </tr>
+                    <tr>
+                        <td>高電圧送電線の導入</td>
+                        <td>〇</td>
+                        <td>〇</td>
+                        <td>〇</td>
+                    </tr>
+                    <tr>
+                        <td>リアクタンスの低減</td>
+                        <td>〇</td>
+                        <td>〇</td>
+                        <td>〇</td>
+                    </tr>
+                    <tr>
+                        <td>中間開閉所の設置</td>
+                        <td>〇</td>
+                        <td>〇</td>
+                        <td>〇</td>
+                    </tr>
+                    <tr>
+                        <td>速応励磁の採用</td>
+                        <td></td>
+                        <td>〇</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>調速機の高速化</td>
+                        <td></td>
+                        <td>〇</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>直列コンデンサの設置</td>
+                        <td>〇</td>
+                        <td>〇</td>
+                        <td>〇</td>
+                    </tr>
+                    <tr>
+                        <td>SVCの設置</td>
+                        <td>〇</td>
+                        <td>〇</td>
+                        <td>〇</td>
+                    </tr>
+                </table>
             </div>
             <button class="btn-copy" onclick="generateAndShowImage('a4-area')">📸 画像を生成 (コピー用)</button>
         </div>
     </div>
 
+    <!-- 山本先生セクション -->
     <div class="section-header">
         <h2>座標変換・回路方程式分野（山本先生）</h2>
     </div>
 
+    <!-- Q5 -->
     <div class="qa-container">
         <div class="question-box" id="q5-area">
             <span class="source-tag">出典：H23年度 過去問</span>
@@ -385,6 +461,7 @@
         </div>
     </div>
 
+    <!-- Q6 -->
     <div class="qa-container">
         <div class="question-box" id="q6-area">
             <span class="source-tag">出典：H24年度、H28年度、H29年度、R1年度、R4年度 過去問</span>
@@ -408,6 +485,7 @@
         </div>
     </div>
     
+    <!-- Q7 -->
     <div class="qa-container">
         <div class="question-box" id="q7-area">
             <span class="source-tag">出典：H28年度 過去問</span>
@@ -438,11 +516,16 @@
         </div>
     </div>
 
+    <!-- Q8 -->
     <div class="qa-container">
         <div class="question-box" id="q8-area">
-            <span class="source-tag">出典：H23年度、H28年度、H29年度、R4年度 過去問</span>
-            <h3>問題 8：RL回路の微分方程式と過渡解</h3>
-            <p>微分方程式 $Ri + L\frac{di}{dt} = \sqrt{2}V \cos \omega t$ を解きなさい。ただし、$t=0$ のとき $i=0$ であるとする。</p>
+            <span class="source-tag">出典：H30年度 講義資料等</span>
+            <h3>問題 8：インピーダンス行列の変換（相互インダクタンスなし：$R+pL$ の場合）</h3>
+            <p>相互インダクタンスを無視した三相平衡回路のインピーダンス行列を $Z_{uvw} = \text{diag}(R+pL, R+pL, R+pL)$ とする。ここで $p=d/dt$ は微分演算子である。</p>
+            <p>この $Z_{uvw}$ を $\alpha\beta$ 変換した行列 $Z_{\alpha\beta0}$、およびさらに dq 変換を適用した行列 $Z_{dq}$ を導出しなさい。ただし、dq変換行列 $C_2$ とその逆行列は以下の通りとする。</p>
+            <div class="math-block">
+                $$C_2 = \begin{bmatrix} \cos \omega t & \sin \omega t \\ -\sin \omega t & \cos \omega t \end{bmatrix}, \quad C_2^{-1} = C_2^T = \begin{bmatrix} \cos \omega t & -\sin \omega t \\ \sin \omega t & \cos \omega t \end{bmatrix}$$
+            </div>
         </div>
         <div class="action-bar">
             <button class="btn-copy" onclick="generateAndShowImage('q8-area')">📸 画像を生成 (コピー用)</button>
@@ -450,23 +533,52 @@
         <button class="btn-toggle" onclick="toggleAnswer('a8')">解答を表示 / 非表示</button>
         <div class="answer-box" id="a8">
             <div id="a8-area">
-                <p>解 $i(t)$ は定常解 $i_s(t)$ と過渡解 $i_f(t)$ の和で表される。</p>
-                <p>定常解：$i_s(t) = \frac{\sqrt{2}V}{\sqrt{R^2 + (\omega L)^2}} \cos(\omega t - \phi)$ （ただし $\phi = \tan^{-1}\frac{\omega L}{R}$）<br>
-                過渡解：$i_f(t) = A e^{-\frac{R}{L}t}$</p>
-                <p>初期条件 $i(0)=0$ より $A = -\frac{\sqrt{2}V}{\sqrt{R^2 + (\omega L)^2}} \cos(-\phi)$。</p>
+                <p><strong>1. $\alpha\beta$ 変換 ($Z_{\alpha\beta0}$)</strong><br>
+                $Z_{uvw}$ は対角成分が全て $R+pL$ のスカラー倍行列 $(R+pL)I_{3\times3}$ であるため、任意の直交行列 $C_1$ による変換 $C_1 Z_{uvw} C_1^T$ を行っても形は変わらない。<br>
+                よって、零相成分を除いた $\alpha\beta$ 行列は、</p>
                 <div class="math-block">
-                    $$i(t) = \frac{\sqrt{2}V}{\sqrt{R^2 + (\omega L)^2}} \left\{ \cos(\omega t - \phi) - \cos(-\phi) e^{-\frac{R}{L}t} \right\}$$
+                    $$Z_{\alpha\beta} = \begin{bmatrix} R+pL & 0 \\ 0 & R+pL \end{bmatrix}$$
+                </div>
+                
+                <p><strong>2. dq 変換 ($Z_{dq}$)</strong><br>
+                電圧方程式 $v_{\alpha\beta} = Z_{\alpha\beta} i_{\alpha\beta}$ に対して、$v_{\alpha\beta} = C_2^{-1} v_{dq}$ および $i_{\alpha\beta} = C_2^{-1} i_{dq}$ を代入する。</p>
+                <div class="math-block">
+                    $$C_2^{-1} v_{dq} = Z_{\alpha\beta} (C_2^{-1} i_{dq})$$
+                </div>
+                <p>両辺に左から $C_2$ を掛ける。微分演算子 $p$ は $C_2^{-1}$ にも作用するため「積の微分」を用いる。</p>
+                <div class="math-block">
+                    $$v_{dq} = C_2 (R + pL) (C_2^{-1} i_{dq}) = R i_{dq} + L C_2 \cdot p(C_2^{-1} i_{dq})$$
+                </div>
+                <div class="math-block">
+                    $$= R i_{dq} + L C_2 \left( \frac{dC_2^{-1}}{dt} i_{dq} + C_2^{-1} \frac{di_{dq}}{dt} \right)$$
+                </div>
+                <p>$C_2 C_2^{-1} = I$ であり、$p i_{dq} = \frac{di_{dq}}{dt}$ なので、</p>
+                <div class="math-block">
+                    $$v_{dq} = R i_{dq} + L p i_{dq} + L C_2 \frac{dC_2^{-1}}{dt} i_{dq} = \left( R + pL + L C_2 \frac{dC_2^{-1}}{dt} \right) i_{dq}$$
+                </div>
+                <p>$\frac{dC_2^{-1}}{dt}$ を計算すると $\omega \begin{bmatrix} -\sin \omega t & -\cos \omega t \\ \cos \omega t & -\sin \omega t \end{bmatrix}$ となる。これを $C_2$ に掛けると、</p>
+                <div class="math-block">
+                    $$C_2 \frac{dC_2^{-1}}{dt} = \omega \begin{bmatrix} 0 & -1 \\ 1 & 0 \end{bmatrix}$$
+                </div>
+                <p>これを代入して $Z_{dq}$ を得る。</p>
+                <div class="math-block">
+                    $$Z_{dq} = \begin{bmatrix} R+pL & 0 \\ 0 & R+pL \end{bmatrix} + \omega L \begin{bmatrix} 0 & -1 \\ 1 & 0 \end{bmatrix} = \begin{bmatrix} R+pL & -\omega L \\ \omega L & R+pL \end{bmatrix}$$
                 </div>
             </div>
             <button class="btn-copy" onclick="generateAndShowImage('a8-area')">📸 画像を生成 (コピー用)</button>
         </div>
     </div>
 
+    <!-- Q9 -->
     <div class="qa-container">
         <div class="question-box" id="q9-area">
-            <span class="source-tag">出典：R1年度 過去問</span>
-            <h3>問題 9：RC回路の微分方程式と過渡解</h3>
-            <p>微分方程式 $Ri + \frac{1}{C}\int i dt = \sqrt{2}V \sin \omega t$ を解きなさい。</p>
+            <span class="source-tag">出典：H30年度 講義資料等</span>
+            <h3>問題 9：インピーダンス行列の変換（相互インダクタンスあり：$R+p(L-M)$ の場合）</h3>
+            <p>各相間の相互インダクタンス $M$ を考慮した三相回路のインピーダンス行列 $Z_{uvw}$ を次のように定義する。</p>
+            <div class="math-block">
+                $$Z_{uvw} = \begin{bmatrix} R+pL & pM & pM \\ pM & R+pL & pM \\ pM & pM & R+pL \end{bmatrix}$$
+            </div>
+            <p>この $Z_{uvw}$ に対して三相-二相変換（絶対変換行列 $C_1$）を行った $Z_{\alpha\beta0}$ を求めよ。さらに、零相成分を除いた $Z_{\alpha\beta}$ を dq変換した行列 $Z_{dq}$ を導出せよ。</p>
         </div>
         <div class="action-bar">
             <button class="btn-copy" onclick="generateAndShowImage('q9-area')">📸 画像を生成 (コピー用)</button>
@@ -474,21 +586,100 @@
         <button class="btn-toggle" onclick="toggleAnswer('a9')">解答を表示 / 非表示</button>
         <div class="answer-box" id="a9">
             <div id="a9-area">
-                <p>両辺を $t$ で微分すると、</p>
+                <p><strong>1. $\alpha\beta$ 変換 ($Z_{\alpha\beta0}$)</strong><br>
+                インピーダンス行列は $Z_{\alpha\beta0} = C_1 Z_{uvw} C_1^T$ で変換される。<br>
+                行列の積を計算すると、$M$ の項が対角化され、以下のようになる。</p>
                 <div class="math-block">
-                    $$R\frac{di}{dt} + \frac{1}{C}i = \sqrt{2}V \omega \cos \omega t$$
+                    $$Z_{\alpha\beta0} = \begin{bmatrix} R+p(L-M) & 0 & 0 \\ 0 & R+p(L-M) & 0 \\ 0 & 0 & R+p(L+2M) \end{bmatrix}$$
                 </div>
-                <p>解 $i(t)$ は定常解 $i_s(t)$ と過渡解 $i_f(t)$ の和で表される。</p>
-                <p>定常解：フェーザ法によりインピーダンスは $Z = R - j\frac{1}{\omega C}$ となるため、<br>
-                $i_s(t) = \frac{\sqrt{2}V}{\sqrt{R^2 + (\frac{1}{\omega C})^2}} \sin(\omega t - \phi)$ （ただし $\phi = \tan^{-1}\frac{-1/\omega C}{R}$）</p>
-                <p>過渡解：特性方程式 $Rp + \frac{1}{C} = 0$ より $p = -\frac{1}{RC}$。よって、<br>
-                $i_f(t) = A e^{-\frac{1}{RC}t}$</p>
-                <p>初期条件（$t=0$ でコンデンサの電荷0など）から定数 $A$ を決定する。</p>
+                <p>つまり、$\alpha$ 軸および $\beta$ 軸のインピーダンスは、実効的なインダクタンス $L' = L-M$ を持つ回路として等価的に扱える。</p>
+
+                <p><strong>2. dq 変換 ($Z_{dq}$)</strong><br>
+                零相成分を無視した $\alpha\beta$ 行列 $Z_{\alpha\beta} = \begin{bmatrix} R+p(L-M) & 0 \\ 0 & R+p(L-M) \end{bmatrix}$ に対して dq変換を行う。<br>
+                問題8のプロセスにおいて、$L$ を $L-M$ に置き換えた計算と全く同じになる。したがって、</p>
+                <div class="math-block">
+                    $$Z_{dq} = C_2 Z_{\alpha\beta} C_2^{-1} + L' C_2 \frac{dC_2^{-1}}{dt} = \begin{bmatrix} R+p(L-M) & -\omega(L-M) \\ \omega(L-M) & R+p(L-M) \end{bmatrix}$$
+                </div>
             </div>
             <button class="btn-copy" onclick="generateAndShowImage('a9-area')">📸 画像を生成 (コピー用)</button>
         </div>
     </div>
 
+    <!-- Q10 -->
+    <div class="qa-container">
+        <div class="question-box" id="q10-area">
+            <span class="source-tag">出典：H23年度、H28年度、H29年度、R4年度 過去問</span>
+            <h3>問題 10：RL回路の微分方程式と過渡解</h3>
+            <p>微分方程式 $Ri + L\frac{di}{dt} = \sqrt{2}V \cos \omega t$ を解きなさい。ただし、$t=0$ のとき $i=0$ であるとする。</p>
+        </div>
+        <div class="action-bar">
+            <button class="btn-copy" onclick="generateAndShowImage('q10-area')">📸 画像を生成 (コピー用)</button>
+        </div>
+        <button class="btn-toggle" onclick="toggleAnswer('a10')">解答を表示 / 非表示</button>
+        <div class="answer-box" id="a10">
+            <div id="a10-area">
+                <p>一般解 $i(t)$ は、定常解 $i_s(t)$ と過渡解 $i_f(t)$ の和 $i(t) = i_s(t) + i_f(t)$ として求める。</p>
+                <p><strong>1. 定常解 $i_s(t)$ の導出</strong><br>
+                フェーザ法を用いる。インピーダンス $\dot{Z} = R + j\omega L$ とし、大きさを $|Z| = \sqrt{R^2 + (\omega L)^2}$、偏角を $\phi = \tan^{-1}(\frac{\omega L}{R})$ とする。<br>
+                電流のフェーザ $\dot{I}_s = \frac{\sqrt{2}V \angle 0}{|Z| \angle \phi} = \frac{\sqrt{2}V}{|Z|} \angle -\phi$<br>
+                これを瞬時値に戻して、定常解は $i_s(t) = \frac{\sqrt{2}V}{|Z|} \cos(\omega t - \phi)$ となる。</p>
+                
+                <p><strong>2. 過渡解 $i_f(t)$ の導出</strong><br>
+                右辺を0とした同次微分方程式 $R i_f + L \frac{di_f}{dt} = 0$ を解く。<br>
+                特性方程式 $R + pL = 0$ より $p = -\frac{R}{L}$ となり、過渡解は $i_f(t) = A e^{-\frac{R}{L}t}$ と置ける（$A$ は積分定数）。</p>
+                
+                <p><strong>3. 初期条件の適用</strong><br>
+                一般解 $i(t) = \frac{\sqrt{2}V}{|Z|} \cos(\omega t - \phi) + A e^{-\frac{R}{L}t}$ に対して、初期条件 $i(0)=0$ を代入する。<br>
+                $0 = \frac{\sqrt{2}V}{|Z|} \cos(-\phi) + A$<br>
+                $\cos(-\phi) = \cos\phi$ より、$A = -\frac{\sqrt{2}V}{|Z|} \cos\phi$ となる。<br>
+                これを代入して式を整理する。</p>
+                
+                <div class="math-block">
+                    $$i(t) = \frac{\sqrt{2}V}{\sqrt{R^2 + (\omega L)^2}} \left\{ \cos(\omega t - \phi) - \cos\phi \cdot e^{-\frac{R}{L}t} \right\}$$
+                </div>
+            </div>
+            <button class="btn-copy" onclick="generateAndShowImage('a10-area')">📸 画像を生成 (コピー用)</button>
+        </div>
+    </div>
+
+    <!-- Q11 -->
+    <div class="qa-container">
+        <div class="question-box" id="q11-area">
+            <span class="source-tag">出典：R1年度 過去問</span>
+            <h3>問題 11：RC回路の微分方程式と過渡解</h3>
+            <p>微分方程式 $Ri + \frac{1}{C}\int i dt = \sqrt{2}V \sin \omega t$ を解きなさい。</p>
+        </div>
+        <div class="action-bar">
+            <button class="btn-copy" onclick="generateAndShowImage('q11-area')">📸 画像を生成 (コピー用)</button>
+        </div>
+        <button class="btn-toggle" onclick="toggleAnswer('a11')">解答を表示 / 非表示</button>
+        <div class="answer-box" id="a11">
+            <div id="a11-area">
+                <p>まず、積分を含む方程式を微分方程式の形にするため、両辺を $t$ で微分する。</p>
+                <div class="math-block">
+                    $$R\frac{di}{dt} + \frac{1}{C}i = \sqrt{2}V \omega \cos \omega t$$
+                </div>
+                <p>解 $i(t)$ は定常解 $i_s(t)$ と過渡解 $i_f(t)$ の和として求める。</p>
+                
+                <p><strong>1. 定常解 $i_s(t)$</strong><br>
+                フェーザ法により、インピーダンスは $\dot{Z} = R - j\frac{1}{\omega C}$ となる。<br>
+                大きさを $|Z| = \sqrt{R^2 + (\frac{1}{\omega C})^2}$、偏角を $\phi = \tan^{-1}\frac{-1/\omega C}{R}$ とする（$\phi$ は負の値になる）。<br>
+                右辺の電源が $\sin$ 波であるため、電流も $\sin$ 波を基準として遅れ（この場合は進み）を考慮する。<br>
+                $i_s(t) = \frac{\sqrt{2}V}{|Z|} \sin(\omega t - \phi)$</p>
+                
+                <p><strong>2. 過渡解 $i_f(t)$</strong><br>
+                同次微分方程式 $R\frac{di_f}{dt} + \frac{1}{C}i_f = 0$ の特性方程式 $Rp + \frac{1}{C} = 0$ より、$p = -\frac{1}{RC}$。<br>
+                よって、過渡解は $i_f(t) = A e^{-\frac{1}{RC}t}$ となる。</p>
+                
+                <p><strong>3. 一般解</strong><br>
+                $i(t) = \frac{\sqrt{2}V}{\sqrt{R^2 + (\frac{1}{\omega C})^2}} \sin(\omega t - \phi) + A e^{-\frac{1}{RC}t}$<br>
+                （※ $A$ は $t=0$ でのコンデンサの初期電荷などから決定される。）</p>
+            </div>
+            <button class="btn-copy" onclick="generateAndShowImage('a11-area')">📸 画像を生成 (コピー用)</button>
+        </div>
+    </div>
+
+    <!-- モーダル本体 -->
     <div id="image-modal">
         <span class="close-btn" onclick="closeModal()">&times;</span>
         <img class="modal-content" id="popup-image">
@@ -512,16 +703,18 @@
             }
 
             try {
-                // html-to-imageを使って画像化（文字化け対策済み）
-                const dataUrl = await htmlToImage.toPng(element, {
+                // MathJax描画(SVG)の完了を確実に待ってから撮影
+                await MathJax.typesetPromise();
+                
+                const canvas = await html2canvas(element, {
+                    scale: 2,
                     backgroundColor: "#ffffff",
-                    pixelRatio: 2,
-                    style: {
-                        transform: 'scale(1)',
-                        transformOrigin: 'top left'
-                    }
+                    logging: false,
+                    useCORS: true,
+                    allowTaint: true
                 });
 
+                const dataUrl = canvas.toDataURL("image/png");
                 const modal = document.getElementById("image-modal");
                 const modalImg = document.getElementById("popup-image");
                 modalImg.src = dataUrl;
