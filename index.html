@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>電気エネルギー工学特論 過去問演習ドリル</title>
 
+    <!-- 数式をベクター画像(SVG)として描画し、画像コピー時の文字化けを完全防止する -->
     <script>
         window.MathJax = {
             tex: {
@@ -12,15 +14,16 @@
                 displayMath: [['$$', '$$']]
             },
             svg: {
-                fontCache: 'none'
+                fontCache: 'none' // 文字化け・ローマン体化を防ぐ必須設定
             }
         };
     </script>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
-    
+
+    <!-- 高精度な画像化ライブラリ -->
     <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.min.js"></script>
-    
+
     <style>
         body {
             font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
@@ -33,6 +36,7 @@
             word-wrap: break-word;
             overflow-wrap: break-word;
         }
+
         h1 {
             text-align: center;
             color: #1a3a5f;
@@ -40,6 +44,7 @@
             padding-bottom: 15px;
             margin-bottom: 40px;
         }
+
         .section-header {
             background-color: #1a3a5f;
             color: white;
@@ -48,24 +53,28 @@
             margin-top: 50px;
             margin-bottom: 20px;
         }
+
         .qa-container {
             background: #fff;
             border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
             margin-bottom: 35px;
             overflow: hidden;
             border: 1px solid #d1d9e6;
         }
+
         .question-box {
             padding: 25px;
             background-color: #ffffff;
         }
+
         .answer-box {
             padding: 25px;
             background-color: #f8fbff;
             border-top: 2px dashed #cbdcf0;
             display: none;
         }
+
         .source-tag {
             display: inline-block;
             background-color: #e2e8f0;
@@ -76,11 +85,13 @@
             font-weight: bold;
             margin-bottom: 10px;
         }
+
         h3 {
             margin-top: 0;
             color: #2c3e50;
             font-size: 1.2em;
         }
+
         .btn-toggle {
             background-color: #3b82f6;
             color: white;
@@ -92,15 +103,18 @@
             cursor: pointer;
             transition: background 0.3s;
         }
+
         .btn-toggle:hover {
             background-color: #2563eb;
         }
+
         .action-bar {
             display: flex;
             gap: 10px;
             padding: 10px 25px;
             background-color: #f1f5f9;
         }
+
         .btn-copy {
             background-color: #10b981;
             color: white;
@@ -111,13 +125,16 @@
             font-weight: bold;
             cursor: pointer;
         }
+
         .btn-copy:hover {
             background-color: #059669;
         }
+
         .math-block {
             margin: 15px 0;
             overflow-x: auto;
         }
+
         .diagram-container {
             text-align: center;
             margin: 20px 0;
@@ -126,7 +143,7 @@
             border-radius: 8px;
             border: 1px solid #ddd;
         }
-        
+
         table.stability-table {
             width: 100%;
             border-collapse: collapse;
@@ -134,16 +151,20 @@
             font-size: 0.9em;
             background-color: #fff;
         }
-        table.stability-table th, table.stability-table td {
+
+        table.stability-table th,
+        table.stability-table td {
             border: 1px solid #ccc;
             padding: 10px;
             text-align: center;
         }
+
         table.stability-table th {
             background-color: #e9ecef;
             color: #2c3e50;
         }
 
+        /* 画像プレビュー用モーダル */
         #image-modal {
             display: none;
             position: fixed;
@@ -152,16 +173,18 @@
             top: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0,0,0,0.85);
+            background-color: rgba(0, 0, 0, 0.85);
             overflow: auto;
         }
+
         .modal-content {
             margin: 5% auto;
             display: block;
             max-width: 90%;
             border-radius: 8px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
         }
+
         #caption {
             margin: auto;
             display: block;
@@ -174,6 +197,7 @@
             font-weight: bold;
         }
 
+        /* 視認性を高めた「×」ボタン */
         .close-btn {
             position: fixed;
             top: 20px;
@@ -188,23 +212,26 @@
             font-size: 40px;
             font-weight: bold;
             cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.6);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
             z-index: 1001;
             transition: transform 0.2s, background-color 0.2s;
         }
+
         .close-btn:hover {
             background-color: #c0392b;
             transform: scale(1.1);
         }
     </style>
 </head>
+
 <body>
 
+    <!-- システム強制挿入タグの自動クリーニング -->
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
             function cleanCitations(node) {
                 if (node.nodeType === Node.TEXT_NODE) {
-                    node.nodeValue = node.nodeValue.replace(/\/g, '').replace(/\[cite\]/g, '');
+                    node.nodeValue = node.nodeValue.replace(/\/g, '').replace(/\[cite\] / g, '');
                 } else if (node.nodeType === Node.ELEMENT_NODE) {
                     node.childNodes.forEach(cleanCitations);
                 }
@@ -229,27 +256,42 @@
         <div class="question-box" id="q1-area">
             <span class="source-tag">出典：H28年度、H29年度、R4年度 過去問</span>
             <h3>問題 1：有効電力と無効電力の一般式</h3>
-            <p>図のような三相3線式1回線送電線を通して無限大母線に送電している系統がある。発電機1相当たりの起電力を $\dot{E}_s = E_s \angle \delta$、無限大母線側の相電圧を $\dot{E}_r = E_r \angle 0$ とするとき、1相当たりの有効電力 $P$ 及び無効電力 $Q$ を導出しなさい。ただし、送電線1線当たりのリアクタンスを $X$ とし、その他の定数は無視する。</p>
-            
+            <p>図のような三相3線式1回線送電線を通して無限大母線に送電している系統がある。発電機1相当たりの起電力を $\dot{E}_s = E_s \angle \delta$、無限大母線側の相電圧を
+                $\dot{E}_r = E_r \angle 0$ とするとき、1相当たりの有効電力 $P$ 及び無効電力 $Q$ を導出しなさい。ただし、送電線1線当たりのリアクタンスを $X$
+                とし、その他の定数は無視する。</p>
+
             <div class="diagram-container">
                 <svg width="450" height="150" viewBox="0 0 450 150" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="60" cy="60" r="25" fill="#fff" stroke="#333" stroke-width="2"/>
-                    <path d="M 45 60 Q 52.5 45 60 60 T 75 60" fill="none" stroke="#333" stroke-width="2"/>
+                    <circle cx="60" cy="60" r="25" fill="#fff" stroke="#333" stroke-width="2" />
+                    <path d="M 45 60 Q 52.5 45 60 60 T 75 60" fill="none" stroke="#333" stroke-width="2" />
                     <text x="60" y="25" text-anchor="middle" font-size="14" fill="#333">発電機</text>
-                    <line x1="85" y1="60" x2="180" y2="60" stroke="#333" stroke-width="2"/>
-                    <path d="M 180 60 Q 190 40 200 60 Q 210 40 220 60 Q 230 40 240 60 Q 250 40 260 60" fill="none" stroke="#333" stroke-width="2"/>
-                    <text x="220" y="35" text-anchor="middle" font-size="16" font-family="'Times New Roman', serif" font-style="italic" fill="#333">X</text>
-                    <line x1="260" y1="60" x2="380" y2="60" stroke="#333" stroke-width="2"/>
-                    <line x1="380" y1="20" x2="380" y2="100" stroke="#333" stroke-width="3"/>
-                    <path d="M 380 25 L 395 15 M 380 40 L 395 30 M 380 55 L 395 45 M 380 70 L 395 60 M 380 85 L 395 75 M 380 100 L 395 90" stroke="#333" stroke-width="1.5"/>
+                    <line x1="85" y1="60" x2="180" y2="60" stroke="#333" stroke-width="2" />
+                    <path d="M 180 60 Q 190 40 200 60 Q 210 40 220 60 Q 230 40 240 60 Q 250 40 260 60" fill="none"
+                        stroke="#333" stroke-width="2" />
+                    <text x="220" y="35" text-anchor="middle" font-size="16" font-family="'Times New Roman', serif"
+                        font-style="italic" fill="#333">X</text>
+                    <line x1="260" y1="60" x2="380" y2="60" stroke="#333" stroke-width="2" />
+                    <line x1="380" y1="20" x2="380" y2="100" stroke="#333" stroke-width="3" />
+                    <path
+                        d="M 380 25 L 395 15 M 380 40 L 395 30 M 380 55 L 395 45 M 380 70 L 395 60 M 380 85 L 395 75 M 380 100 L 395 90"
+                        stroke="#333" stroke-width="1.5" />
                     <text x="405" y="65" font-size="14" fill="#333">無限大母線</text>
-                    <line x1="120" y1="120" x2="120" y2="70" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
-                    <text x="130" y="115" font-size="14" font-family="'Times New Roman', serif" font-style="italic" fill="#333">E<tspan baseline-shift="sub" font-size="10" font-style="normal">s</tspan> = E<tspan baseline-shift="sub" font-size="10" font-style="normal">s</tspan><tspan font-style="normal">∠δ</tspan></text>
-                    <line x1="360" y1="120" x2="360" y2="70" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
-                    <text x="370" y="115" font-size="14" font-family="'Times New Roman', serif" font-style="italic" fill="#333">E<tspan baseline-shift="sub" font-size="10" font-style="normal">r</tspan> = E<tspan baseline-shift="sub" font-size="10" font-style="normal">r</tspan><tspan font-style="normal">∠0</tspan></text>
+                    <line x1="120" y1="120" x2="120" y2="70" stroke="#333" stroke-width="2" marker-end="url(#arrow)" />
+                    <text x="130" y="115" font-size="14" font-family="'Times New Roman', serif" font-style="italic"
+                        fill="#333">E<tspan baseline-shift="sub" font-size="10" font-style="normal">s</tspan> = E<tspan
+                            baseline-shift="sub" font-size="10" font-style="normal">s</tspan>
+                        <tspan font-style="normal">∠δ</tspan>
+                    </text>
+                    <line x1="360" y1="120" x2="360" y2="70" stroke="#333" stroke-width="2" marker-end="url(#arrow)" />
+                    <text x="370" y="115" font-size="14" font-family="'Times New Roman', serif" font-style="italic"
+                        fill="#333">E<tspan baseline-shift="sub" font-size="10" font-style="normal">r</tspan> = E<tspan
+                            baseline-shift="sub" font-size="10" font-style="normal">r</tspan>
+                        <tspan font-style="normal">∠0</tspan>
+                    </text>
                     <defs>
-                        <marker id="arrow" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto-start-reverse">
-                            <path d="M 0 0 L 10 5 L 0 10 z" fill="#333"/>
+                        <marker id="arrow" markerWidth="10" markerHeight="10" refX="5" refY="5"
+                            orient="auto-start-reverse">
+                            <path d="M 0 0 L 10 5 L 0 10 z" fill="#333" />
                         </marker>
                     </defs>
                 </svg>
@@ -263,7 +305,8 @@
             <div id="a1-area">
                 <p>電流を $\dot{I}$ とすると、受電端電圧を基準ベクトルとして：</p>
                 <div class="math-block">
-                    $$\dot{I} = \frac{\dot{E}_s - \dot{E}_r}{jX} = \frac{E_s(\cos \delta + j \sin \delta) - E_r}{jX} = \frac{E_s \sin \delta - j(E_s \cos \delta - E_r)}{X}$$
+                    $$\dot{I} = \frac{\dot{E}_s - \dot{E}_r}{jX} = \frac{E_s(\cos \delta + j \sin \delta) - E_r}{jX} =
+                    \frac{E_s \sin \delta - j(E_s \cos \delta - E_r)}{X}$$
                 </div>
                 <p>複素電力 $\dot{S} = P + jQ = \dot{E}_r \bar{\dot{I}}$ （受電端）より：</p>
                 <div class="math-block">
@@ -279,7 +322,8 @@
         <div class="question-box" id="q2-area">
             <span class="source-tag">出典：H29年度、R4年度 過去問</span>
             <h3>問題 2：送電電力の数値計算</h3>
-            <p><strong>【パターンA】</strong>発電機1相当たりの起電力 $E_s$ が 160kV、無限大母線の相電圧 $E_r$ が 140kV、一相当たりのリアクタンス $X$ が 400Ω のとき</p>
+            <p><strong>【パターンA】</strong>発電機1相当たりの起電力 $E_s$ が 160kV、無限大母線の相電圧 $E_r$ が 140kV、一相当たりのリアクタンス $X$ が 400Ω のとき
+            </p>
             <p><strong>【パターンB】</strong>発電機1相当たりの起電力 $E_s$ が 77kV、無限大母線の相電圧 $E_r$ が 70kV、一相当たりのリアクタンス $X$ が 60Ω のとき</p>
             <p>各パターンにおいて、(i) 定態安定度極限電力（三相合計）と、(ii) 位相角 $\delta = 30^\circ$ のときの送電電力（三相合計）を求めなさい。</p>
         </div>
@@ -291,11 +335,11 @@
             <div id="a2-area">
                 <p>定態安定度極限電力は $\delta = 90^\circ$ で最大となる。三相電力は $P = 3 \times \frac{E_s E_r}{X} \sin \delta$ で計算する。</p>
                 <p><strong>【パターンAの解答】</strong><br>
-                (i) $P_{max} = 3 \times \frac{160 \times 140}{400} \sin 90^\circ = 168 \text{ [MW]}$<br>
-                (ii) $P = 3 \times \frac{160 \times 140}{400} \sin 30^\circ = 84 \text{ [MW]}$</p>
+                    (i) $P_{max} = 3 \times \frac{160 \times 140}{400} \sin 90^\circ = 168 \text{ [MW]}$<br>
+                    (ii) $P = 3 \times \frac{160 \times 140}{400} \sin 30^\circ = 84 \text{ [MW]}$</p>
                 <p><strong>【パターンBの解答】</strong><br>
-                (i) $P_{max} = 3 \times \frac{77 \times 70}{60} \sin 90^\circ = 269.5 \text{ [MW]}$<br>
-                (ii) $P = 3 \times \frac{77 \times 70}{60} \sin 30^\circ = 134.75 \text{ [MW]}$</p>
+                    (i) $P_{max} = 3 \times \frac{77 \times 70}{60} \sin 90^\circ = 269.5 \text{ [MW]}$<br>
+                    (ii) $P = 3 \times \frac{77 \times 70}{60} \sin 30^\circ = 134.75 \text{ [MW]}$</p>
             </div>
             <button class="btn-copy" onclick="generateAndShowImage('a2-area')">📸 画像を生成 (コピー用)</button>
         </div>
@@ -306,7 +350,8 @@
         <div class="question-box" id="q3-area">
             <span class="source-tag">出典：H28年度 過去問</span>
             <h3>問題 3：中間開閉所を設置した系統の送電電力</h3>
-            <p>三相3線式2回線送電線を通して無限大母線に送電している中間開閉所を設置した系統がある。以下の各条件における1相当たりの有効電力 $P$ を示しなさい。ただし、発電機のリアクタンスを $X_d'$、送電線1回線1線当たりのリアクタンスを $X$ とする。</p>
+            <p>三相3線式2回線送電線を通して無限大母線に送電している中間開閉所を設置した系統がある。以下の各条件における1相当たりの有効電力 $P$ を示しなさい。ただし、発電機のリアクタンスを
+                $X_d'$、送電線1回線1線当たりのリアクタンスを $X$ とする。</p>
             <ol>
                 <li>(i) 全区間1回線送電時（中間開閉所なし）</li>
                 <li>(ii) 一部区間1回線送電時（中間開閉所あり）</li>
@@ -320,15 +365,15 @@
             <div id="a3-area">
                 <p>全リアクタンスを合成して計算する。</p>
                 <p>**(i) 全区間1回線送電時（中間開閉所なし）：**<br>
-                送電線のリアクタンスは $X$ となるため、全体の合成リアクタンスは $X_d' + X$。よって送電電力は、</p>
+                    送電線のリアクタンスは $X$ となるため、全体の合成リアクタンスは $X_d' + X$。よって送電電力は、</p>
                 <div class="math-block">
                     $$P = \frac{E_s E_r}{X_d' + X} \sin \delta$$
                 </div>
                 <p>**(ii) 一部区間1回線送電時（中間開閉所あり）：**<br>
-                送電線が中間開閉所で2つに分割されているとする（各区間の1回線あたりリアクタンスは $X/2$）。<br>
-                健全な区間は2回線並列なので合成リアクタンスは $\frac{X/2}{2} = X/4$。<br>
-                事故等で1回線が開放されている区間は $X/2$ のまま。よって送電線全体のリアクタンスは $X/4 + X/2 = 3X/4$ となる。<br>
-                したがって送電電力は、</p>
+                    送電線が中間開閉所で2つに分割されているとする（各区間の1回線あたりリアクタンスは $X/2$）。<br>
+                    健全な区間は2回線並列なので合成リアクタンスは $\frac{X/2}{2} = X/4$。<br>
+                    事故等で1回線が開放されている区間は $X/2$ のまま。よって送電線全体のリアクタンスは $X/4 + X/2 = 3X/4$ となる。<br>
+                    したがって送電電力は、</p>
                 <div class="math-block">
                     $$P = \frac{E_s E_r}{X_d' + \frac{3}{4}X} \sin \delta$$
                 </div>
@@ -345,7 +390,8 @@
             <ol>
                 <li>(i) 定態・過渡・電圧安定度の3つすべてに効果のある対策を4つ挙げなさい。</li>
                 <li>(ii) 過渡安定度向上にのみ特に効果のある対策を2つ挙げなさい。</li>
-                <li>(iii) 各種安定度向上対策とその効果について、表を用いてまとめなさい。</li>
+                <li>(iii) 電圧不安定現象（電圧崩壊）について50~100文字程度で説明しなさい。</li>
+                <li>(iv) 各種安定度向上対策とその効果について、表を用いてまとめなさい。</li>
             </ol>
         </div>
         <div class="action-bar">
@@ -355,15 +401,20 @@
         <div class="answer-box" id="a4">
             <div id="a4-area">
                 <p>**(i) 3つすべてに効果がある対策：**<br>
-                1. 高電圧送電線の導入 <br>
-                2. 中間開閉所の設置 <br>
-                3. 直列コンデンサの設置 <br>
-                4. 静止型無効電力補償装置(SVC)の設置 </p>
+                    1. 高電圧送電線の導入 <br>
+                    2. 中間開閉所の設置 <br>
+                    3. 直列コンデンサの設置 <br>
+                    4. 静止型無効電力補償装置(SVC)の設置 </p>
+
                 <p>**(ii) 過渡安定度向上にのみ効果がある対策：**<br>
-                1. 調速機(ガバナ)の高速化 <br>
-                2. タービン高速バルブ制御 <br>
-                （※速応励磁の採用も可）</p>
-                <p>**(iii) 各種安定度向上対策とその効果：**</p>
+                    1. 調速機(ガバナ)の高速化 <br>
+                    2. タービン高速バルブ制御 <br>
+                    （※速応励磁の採用も可）</p>
+
+                <p>**(iii) 電圧不安定現象の説明：**<br>
+                    需要の増加に伴い無効電力供給が不足し、電圧維持が困難になる現象。一度電圧降下が始まると、電力一定負荷などの特性によりさらに電流が増加し、連鎖的に電圧が急落して広域停電に至る（電圧崩壊）。</p>
+
+                <p>**(iv) 各種安定度向上対策とその効果：**</p>
                 <table class="stability-table">
                     <tr>
                         <th>安定化対策</th>
@@ -429,9 +480,12 @@
         <div class="question-box" id="q5-area">
             <span class="source-tag">出典：H23年度 過去問</span>
             <h3>問題 5：空間電圧ベクトルの導出</h3>
-            <p>平衡三相電圧 $e_a, e_b, e_c$ を $t=0$ においてスイッチSを閉じて、1相分の抵抗 $r$、インダクタンス $L$ の三相平衡負荷に加えた。相電圧は $e_a = \sqrt{2}V \cos \omega t$, $e_b = \sqrt{2}V \cos(\omega t - \frac{2\pi}{3})$, $e_c = \sqrt{2}V \cos(\omega t - \frac{4\pi}{3})$ とする。</p>
+            <p>平衡三相電圧 $e_a, e_b, e_c$ を $t=0$ においてスイッチSを閉じて、1相分の抵抗 $r$、インダクタンス $L$ の三相平衡負荷に加えた。相電圧は $e_a = \sqrt{2}V
+                \cos \omega t$, $e_b = \sqrt{2}V \cos(\omega t - \frac{2\pi}{3})$, $e_c = \sqrt{2}V \cos(\omega t -
+                \frac{4\pi}{3})$ とする。</p>
             <p>静止座標における空間電圧ベクトル $\underline{v}_{qds}^s$ を求めなさい。<br>
-            ※空間ベクトルの定義式：$\underline{f}_{qds}^s = \frac{2}{3}(f_a + \underline{a}f_b + \underline{a}^2 f_c)$, $\underline{a} = e^{j\frac{2\pi}{3}}$</p>
+                ※空間ベクトルの定義式：$\underline{f}_{qds}^s = \frac{2}{3}(f_a + \underline{a}f_b + \underline{a}^2 f_c)$,
+                $\underline{a} = e^{j\frac{2\pi}{3}}$</p>
         </div>
         <div class="action-bar">
             <button class="btn-copy" onclick="generateAndShowImage('q5-area')">📸 画像を生成 (コピー用)</button>
@@ -441,13 +495,17 @@
             <div id="a5-area">
                 <p>オイラーの公式 $\cos \theta = \frac{e^{j\theta} + e^{-j\theta}}{2}$ を用いて定義式に代入する。</p>
                 <div class="math-block">
-                    $$\underline{v}_{qds}^s = \frac{2}{3} \times \frac{\sqrt{2}V}{2} \left[ (e^{j\omega t} + e^{-j\omega t}) + e^{j\frac{2\pi}{3}}(e^{j(\omega t - \frac{2\pi}{3})} + e^{-j(\omega t - \frac{2\pi}{3})}) + e^{j\frac{4\pi}{3}}(e^{j(\omega t - \frac{4\pi}{3})} + e^{-j(\omega t - \frac{4\pi}{3})}) \right]$$
+                    $$\underline{v}_{qds}^s = \frac{2}{3} \times \frac{\sqrt{2}V}{2} \left[ (e^{j\omega t} + e^{-j\omega
+                    t}) + e^{j\frac{2\pi}{3}}(e^{j(\omega t - \frac{2\pi}{3})} + e^{-j(\omega t - \frac{2\pi}{3})}) +
+                    e^{j\frac{4\pi}{3}}(e^{j(\omega t - \frac{4\pi}{3})} + e^{-j(\omega t - \frac{4\pi}{3})}) \right]$$
                 </div>
                 <p>$e^{j\omega t}$ の項と $e^{-j\omega t}$ の項に整理すると、</p>
                 <div class="math-block">
-                    $$= \frac{\sqrt{2}V}{3} \left[ e^{j\omega t}(1 + 1 + 1) + e^{-j\omega t}(1 + e^{j\frac{4\pi}{3}} + e^{j\frac{8\pi}{3}}) \right]$$
+                    $$= \frac{\sqrt{2}V}{3} \left[ e^{j\omega t}(1 + 1 + 1) + e^{-j\omega t}(1 + e^{j\frac{4\pi}{3}} +
+                    e^{j\frac{8\pi}{3}}) \right]$$
                 </div>
-                <p>ここで $1 + \underline{a} + \underline{a}^2 = 0$ より、後半の $e^{-j\omega t}$ の係数は $1 + e^{j\frac{4\pi}{3}} + e^{j\frac{2\pi}{3}} = 0$ となる。</p>
+                <p>ここで $1 + \underline{a} + \underline{a}^2 = 0$ より、後半の $e^{-j\omega t}$ の係数は $1 + e^{j\frac{4\pi}{3}} +
+                    e^{j\frac{2\pi}{3}} = 0$ となる。</p>
                 <div class="math-block">
                     $$\underline{v}_{qds}^s = \frac{\sqrt{2}V}{3} \times 3 e^{j\omega t} = \sqrt{2}V e^{j\omega t}$$
                 </div>
@@ -461,9 +519,11 @@
         <div class="question-box" id="q6-area">
             <span class="source-tag">出典：H24年度、H28年度、H29年度、R1年度、R4年度 過去問</span>
             <h3>問題 6：三相-二相変換行列の係数</h3>
-            <p>三相-二相変換（$uvw-\alpha\beta0$ の絶対変換）の変換行列 $C_1$ を次に示す。$C_1$ が絶対変換であり、$k_1, k_2 > 0$ であるとき、係数 $k_1, k_2$ を求めなさい。</p>
+            <p>三相-二相変換（$uvw-\alpha\beta0$ の絶対変換）の変換行列 $C_1$ を次に示す。$C_1$ が絶対変換であり、$k_1, k_2 > 0$ であるとき、係数 $k_1, k_2$
+                を求めなさい。</p>
             <div class="math-block">
-                $$C_1 = k_1 \begin{bmatrix} 1 & -1/2 & -1/2 \\ 0 & \sqrt{3}/2 & -\sqrt{3}/2 \\ k_2 & k_2 & k_2 \end{bmatrix}$$
+                $$C_1 = k_1 \begin{bmatrix} 1 & -1/2 & -1/2 \\ 0 & \sqrt{3}/2 & -\sqrt{3}/2 \\ k_2 & k_2 & k_2
+                \end{bmatrix}$$
             </div>
         </div>
         <div class="action-bar">
@@ -473,13 +533,15 @@
         <div class="answer-box" id="a6">
             <div id="a6-area">
                 <p>絶対変換の条件は $C_1^T C_1 = I$（各行の長さの二乗和が1かつ互いに直交）となること。</p>
-                <p>第1行より：$k_1^2 (1^2 + (-1/2)^2 + (-1/2)^2) = k_1^2 \times \frac{3}{2} = 1 \quad \therefore k_1 = \sqrt{\frac{2}{3}}$</p>
-                <p>第3行より：$k_1^2 (k_2^2 + k_2^2 + k_2^2) = \frac{2}{3} \times 3k_2^2 = 2k_2^2 = 1 \quad \therefore k_2 = \frac{1}{\sqrt{2}}$</p>
+                <p>第1行より：$k_1^2 (1^2 + (-1/2)^2 + (-1/2)^2) = k_1^2 \times \frac{3}{2} = 1 \quad \therefore k_1 =
+                    \sqrt{\frac{2}{3}}$</p>
+                <p>第3行より：$k_1^2 (k_2^2 + k_2^2 + k_2^2) = \frac{2}{3} \times 3k_2^2 = 2k_2^2 = 1 \quad \therefore k_2 =
+                    \frac{1}{\sqrt{2}}$</p>
             </div>
             <button class="btn-copy" onclick="generateAndShowImage('a6-area')">📸 画像を生成 (コピー用)</button>
         </div>
     </div>
-    
+
     <!-- Q7 -->
     <div class="qa-container">
         <div class="question-box" id="q7-area">
@@ -491,7 +553,9 @@
             </div>
             <p>ただし、三相-dq変換の変換行列 $C_3$ は以下のものを用いる。</p>
             <div class="math-block">
-                $$C_3 = \sqrt{\frac{2}{3}} \begin{bmatrix} \cos \omega t & \cos(\omega t - 120^\circ) & \cos(\omega t + 120^\circ) \\ -\sin \omega t & -\sin(\omega t - 120^\circ) & -\sin(\omega t + 120^\circ) \\ 1/\sqrt{2} & 1/\sqrt{2} & 1/\sqrt{2} \end{bmatrix}$$
+                $$C_3 = \sqrt{\frac{2}{3}} \begin{bmatrix} \cos \omega t & \cos(\omega t - 120^\circ) & \cos(\omega t +
+                120^\circ) \\ -\sin \omega t & -\sin(\omega t - 120^\circ) & -\sin(\omega t + 120^\circ) \\ 1/\sqrt{2} &
+                1/\sqrt{2} & 1/\sqrt{2} \end{bmatrix}$$
             </div>
         </div>
         <div class="action-bar">
@@ -503,7 +567,8 @@
                 <p>ベクトル $[v_d, v_q, v_0]^T = C_3 [v_u, v_v, v_w]^T$ を計算する。</p>
                 <p>$v_d$ の計算：</p>
                 <div class="math-block">
-                    $$v_d = \sqrt{\frac{2}{3}} \left\{ \frac{E}{2} \cos \omega t + \frac{E}{2} \cos(\omega t - 120^\circ) - E \cos(\omega t + 120^\circ) \right\}$$
+                    $$v_d = \sqrt{\frac{2}{3}} \left\{ \frac{E}{2} \cos \omega t + \frac{E}{2} \cos(\omega t -
+                    120^\circ) - E \cos(\omega t + 120^\circ) \right\}$$
                 </div>
                 <p>加法定理などを用いて三角関数を整理すると求まる（$v_q$ についても同様に2行目の要素を掛け合わせて計算する）。</p>
             </div>
@@ -517,9 +582,12 @@
             <span class="source-tag">出典：H30年度 講義資料等</span>
             <h3>問題 8：インピーダンス行列の変換（相互インダクタンスなし：$R+pL$ の場合）</h3>
             <p>相互インダクタンスを無視した三相平衡回路のインピーダンス行列を $Z_{uvw} = \text{diag}(R+pL, R+pL, R+pL)$ とする。ここで $p=d/dt$ は微分演算子である。</p>
-            <p>この $Z_{uvw}$ を $\alpha\beta$ 変換した行列 $Z_{\alpha\beta0}$、およびさらに dq 変換を適用した行列 $Z_{dq}$ を導出しなさい。ただし、dq変換行列 $C_2$ とその逆行列は以下の通りとする。</p>
+            <p>この $Z_{uvw}$ を $\alpha\beta$ 変換した行列 $Z_{\alpha\beta0}$、およびさらに dq 変換を適用した行列 $Z_{dq}$ を導出しなさい。ただし、dq変換行列
+                $C_2$ とその逆行列は以下の通りとする。</p>
             <div class="math-block">
-                $$C_2 = \begin{bmatrix} \cos \omega t & \sin \omega t \\ -\sin \omega t & \cos \omega t \end{bmatrix}, \quad C_2^{-1} = C_2^T = \begin{bmatrix} \cos \omega t & -\sin \omega t \\ \sin \omega t & \cos \omega t \end{bmatrix}$$
+                $$C_2 = \begin{bmatrix} \cos \omega t & \sin \omega t \\ -\sin \omega t & \cos \omega t \end{bmatrix},
+                \quad C_2^{-1} = C_2^T = \begin{bmatrix} \cos \omega t & -\sin \omega t \\ \sin \omega t & \cos \omega t
+                \end{bmatrix}$$
             </div>
         </div>
         <div class="action-bar">
@@ -529,14 +597,16 @@
         <div class="answer-box" id="a8">
             <div id="a8-area">
                 <p><strong>1. $\alpha\beta$ 変換 ($Z_{\alpha\beta0}$)</strong><br>
-                $Z_{uvw}$ は対角成分が全て $R+pL$ のスカラー倍行列 $(R+pL)I_{3\times3}$ であるため、任意の直交行列 $C_1$ による変換 $C_1 Z_{uvw} C_1^T$ を行っても形は変わらない。<br>
-                よって、零相成分を除いた $\alpha\beta$ 行列は、</p>
+                    $Z_{uvw}$ は対角成分が全て $R+pL$ のスカラー倍行列 $(R+pL)I_{3\times3}$ であるため、任意の直交行列 $C_1$ による変換 $C_1 Z_{uvw}
+                    C_1^T$ を行っても形は変わらない。<br>
+                    よって、零相成分を除いた $\alpha\beta$ 行列は、</p>
                 <div class="math-block">
                     $$Z_{\alpha\beta} = \begin{bmatrix} R+pL & 0 \\ 0 & R+pL \end{bmatrix}$$
                 </div>
-                
+
                 <p><strong>2. dq 変換 ($Z_{dq}$)</strong><br>
-                電圧方程式 $v_{\alpha\beta} = Z_{\alpha\beta} i_{\alpha\beta}$ に対して、$v_{\alpha\beta} = C_2^{-1} v_{dq}$ および $i_{\alpha\beta} = C_2^{-1} i_{dq}$ を代入する。</p>
+                    電圧方程式 $v_{\alpha\beta} = Z_{\alpha\beta} i_{\alpha\beta}$ に対して、$v_{\alpha\beta} = C_2^{-1} v_{dq}$
+                    および $i_{\alpha\beta} = C_2^{-1} i_{dq}$ を代入する。</p>
                 <div class="math-block">
                     $$C_2^{-1} v_{dq} = Z_{\alpha\beta} (C_2^{-1} i_{dq})$$
                 </div>
@@ -549,15 +619,18 @@
                 </div>
                 <p>$C_2 C_2^{-1} = I$ であり、$p i_{dq} = \frac{di_{dq}}{dt}$ なので、</p>
                 <div class="math-block">
-                    $$v_{dq} = R i_{dq} + L p i_{dq} + L C_2 \frac{dC_2^{-1}}{dt} i_{dq} = \left( R + pL + L C_2 \frac{dC_2^{-1}}{dt} \right) i_{dq}$$
+                    $$v_{dq} = R i_{dq} + L p i_{dq} + L C_2 \frac{dC_2^{-1}}{dt} i_{dq} = \left( R + pL + L C_2
+                    \frac{dC_2^{-1}}{dt} \right) i_{dq}$$
                 </div>
-                <p>$\frac{dC_2^{-1}}{dt}$ を計算すると $\omega \begin{bmatrix} -\sin \omega t & -\cos \omega t \\ \cos \omega t & -\sin \omega t \end{bmatrix}$ となる。これを $C_2$ に掛けると、</p>
+                <p>$\frac{dC_2^{-1}}{dt}$ を計算すると $\omega \begin{bmatrix} -\sin \omega t & -\cos \omega t \\ \cos \omega
+                    t & -\sin \omega t \end{bmatrix}$ となる。これを $C_2$ に掛けると、</p>
                 <div class="math-block">
                     $$C_2 \frac{dC_2^{-1}}{dt} = \omega \begin{bmatrix} 0 & -1 \\ 1 & 0 \end{bmatrix}$$
                 </div>
                 <p>これを代入して $Z_{dq}$ を得る。</p>
                 <div class="math-block">
-                    $$Z_{dq} = \begin{bmatrix} R+pL & 0 \\ 0 & R+pL \end{bmatrix} + \omega L \begin{bmatrix} 0 & -1 \\ 1 & 0 \end{bmatrix} = \begin{bmatrix} R+pL & -\omega L \\ \omega L & R+pL \end{bmatrix}$$
+                    $$Z_{dq} = \begin{bmatrix} R+pL & 0 \\ 0 & R+pL \end{bmatrix} + \omega L \begin{bmatrix} 0 & -1 \\ 1
+                    & 0 \end{bmatrix} = \begin{bmatrix} R+pL & -\omega L \\ \omega L & R+pL \end{bmatrix}$$
                 </div>
             </div>
             <button class="btn-copy" onclick="generateAndShowImage('a8-area')">📸 画像を生成 (コピー用)</button>
@@ -573,7 +646,8 @@
             <div class="math-block">
                 $$Z_{uvw} = \begin{bmatrix} R+pL & pM & pM \\ pM & R+pL & pM \\ pM & pM & R+pL \end{bmatrix}$$
             </div>
-            <p>この $Z_{uvw}$ に対して三相-二相変換（絶対変換行列 $C_1$）を行った $Z_{\alpha\beta0}$ を求めよ。さらに、零相成分を除いた $Z_{\alpha\beta}$ を dq変換した行列 $Z_{dq}$ を導出せよ。</p>
+            <p>この $Z_{uvw}$ に対して三相-二相変換（絶対変換行列 $C_1$）を行った $Z_{\alpha\beta0}$ を求めよ。さらに、零相成分を除いた $Z_{\alpha\beta}$ を
+                dq変換した行列 $Z_{dq}$ を導出せよ。</p>
         </div>
         <div class="action-bar">
             <button class="btn-copy" onclick="generateAndShowImage('q9-area')">📸 画像を生成 (コピー用)</button>
@@ -582,18 +656,21 @@
         <div class="answer-box" id="a9">
             <div id="a9-area">
                 <p><strong>1. $\alpha\beta$ 変換 ($Z_{\alpha\beta0}$)</strong><br>
-                インピーダンス行列は $Z_{\alpha\beta0} = C_1 Z_{uvw} C_1^T$ で変換される。<br>
-                行列の積を計算すると、$M$ の項が対角化され、以下のようになる。</p>
+                    インピーダンス行列は $Z_{\alpha\beta0} = C_1 Z_{uvw} C_1^T$ で変換される。<br>
+                    行列の積を計算すると、$M$ の項が対角化され、以下のようになる。</p>
                 <div class="math-block">
-                    $$Z_{\alpha\beta0} = \begin{bmatrix} R+p(L-M) & 0 & 0 \\ 0 & R+p(L-M) & 0 \\ 0 & 0 & R+p(L+2M) \end{bmatrix}$$
+                    $$Z_{\alpha\beta0} = \begin{bmatrix} R+p(L-M) & 0 & 0 \\ 0 & R+p(L-M) & 0 \\ 0 & 0 & R+p(L+2M)
+                    \end{bmatrix}$$
                 </div>
                 <p>つまり、$\alpha$ 軸および $\beta$ 軸のインピーダンスは、実効的なインダクタンス $L' = L-M$ を持つ回路として等価的に扱える。</p>
 
                 <p><strong>2. dq 変換 ($Z_{dq}$)</strong><br>
-                零相成分を無視した $\alpha\beta$ 行列 $Z_{\alpha\beta} = \begin{bmatrix} R+p(L-M) & 0 \\ 0 & R+p(L-M) \end{bmatrix}$ に対して dq変換を行う。<br>
-                問題8のプロセスにおいて、$L$ を $L-M$ に置き換えた計算と全く同じになる。したがって、</p>
+                    零相成分を無視した $\alpha\beta$ 行列 $Z_{\alpha\beta} = \begin{bmatrix} R+p(L-M) & 0 \\ 0 & R+p(L-M)
+                    \end{bmatrix}$ に対して dq変換を行う。<br>
+                    問題8のプロセスにおいて、$L$ を $L-M$ に置き換えた計算と全く同じになる。したがって、</p>
                 <div class="math-block">
-                    $$Z_{dq} = C_2 Z_{\alpha\beta} C_2^{-1} + L' C_2 \frac{dC_2^{-1}}{dt} = \begin{bmatrix} R+p(L-M) & -\omega(L-M) \\ \omega(L-M) & R+p(L-M) \end{bmatrix}$$
+                    $$Z_{dq} = C_2 Z_{\alpha\beta} C_2^{-1} + L' C_2 \frac{dC_2^{-1}}{dt} = \begin{bmatrix} R+p(L-M) &
+                    -\omega(L-M) \\ \omega(L-M) & R+p(L-M) \end{bmatrix}$$
                 </div>
             </div>
             <button class="btn-copy" onclick="generateAndShowImage('a9-area')">📸 画像を生成 (コピー用)</button>
@@ -615,22 +692,27 @@
             <div id="a10-area">
                 <p>一般解 $i(t)$ は、定常解 $i_s(t)$ と過渡解 $i_f(t)$ の和 $i(t) = i_s(t) + i_f(t)$ として求める。</p>
                 <p><strong>1. 定常解 $i_s(t)$ の導出</strong><br>
-                フェーザ法を用いる。インピーダンス $\dot{Z} = R + j\omega L$ とし、大きさを $|Z| = \sqrt{R^2 + (\omega L)^2}$、偏角を $\phi = \tan^{-1}(\frac{\omega L}{R})$ とする。<br>
-                電流のフェーザ $\dot{I}_s = \frac{\sqrt{2}V \angle 0}{|Z| \angle \phi} = \frac{\sqrt{2}V}{|Z|} \angle -\phi$<br>
-                これを瞬時値に戻して、定常解は $i_s(t) = \frac{\sqrt{2}V}{|Z|} \cos(\omega t - \phi)$ となる。</p>
-                
+                    フェーザ法を用いる。インピーダンス $\dot{Z} = R + j\omega L$ とし、大きさを $|Z| = \sqrt{R^2 + (\omega L)^2}$、偏角を $\phi =
+                    \tan^{-1}(\frac{\omega L}{R})$ とする。<br>
+                    電流のフェーザ $\dot{I}_s = \frac{\sqrt{2}V \angle 0}{|Z| \angle \phi} = \frac{\sqrt{2}V}{|Z|} \angle
+                    -\phi$<br>
+                    これを瞬時値に戻して、定常解は $i_s(t) = \frac{\sqrt{2}V}{|Z|} \cos(\omega t - \phi)$ となる。</p>
+
                 <p><strong>2. 過渡解 $i_f(t)$ の導出</strong><br>
-                右辺を0とした同次微分方程式 $R i_f + L \frac{di_f}{dt} = 0$ を解く。<br>
-                特性方程式 $R + pL = 0$ より $p = -\frac{R}{L}$ となり、過渡解は $i_f(t) = A e^{-\frac{R}{L}t}$ と置ける（$A$ は積分定数）。</p>
-                
+                    右辺を0とした同次微分方程式 $R i_f + L \frac{di_f}{dt} = 0$ を解く。<br>
+                    特性方程式 $R + pL = 0$ より $p = -\frac{R}{L}$ となり、過渡解は $i_f(t) = A e^{-\frac{R}{L}t}$ と置ける（$A$ は積分定数）。
+                </p>
+
                 <p><strong>3. 初期条件の適用</strong><br>
-                一般解 $i(t) = \frac{\sqrt{2}V}{|Z|} \cos(\omega t - \phi) + A e^{-\frac{R}{L}t}$ に対して、初期条件 $i(0)=0$ を代入する。<br>
-                $0 = \frac{\sqrt{2}V}{|Z|} \cos(-\phi) + A$<br>
-                $\cos(-\phi) = \cos\phi$ より、$A = -\frac{\sqrt{2}V}{|Z|} \cos\phi$ となる。<br>
-                これを代入して式を整理する。</p>
-                
+                    一般解 $i(t) = \frac{\sqrt{2}V}{|Z|} \cos(\omega t - \phi) + A e^{-\frac{R}{L}t}$ に対して、初期条件 $i(0)=0$
+                    を代入する。<br>
+                    $0 = \frac{\sqrt{2}V}{|Z|} \cos(-\phi) + A$<br>
+                    $\cos(-\phi) = \cos\phi$ より、$A = -\frac{\sqrt{2}V}{|Z|} \cos\phi$ となる。<br>
+                    これを代入して式を整理する。</p>
+
                 <div class="math-block">
-                    $$i(t) = \frac{\sqrt{2}V}{\sqrt{R^2 + (\omega L)^2}} \left\{ \cos(\omega t - \phi) - \cos\phi \cdot e^{-\frac{R}{L}t} \right\}$$
+                    $$i(t) = \frac{\sqrt{2}V}{\sqrt{R^2 + (\omega L)^2}} \left\{ \cos(\omega t - \phi) - \cos\phi \cdot
+                    e^{-\frac{R}{L}t} \right\}$$
                 </div>
             </div>
             <button class="btn-copy" onclick="generateAndShowImage('a10-area')">📸 画像を生成 (コピー用)</button>
@@ -655,20 +737,23 @@
                     $$R\frac{di}{dt} + \frac{1}{C}i = \sqrt{2}V \omega \cos \omega t$$
                 </div>
                 <p>解 $i(t)$ は定常解 $i_s(t)$ と過渡解 $i_f(t)$ の和として求める。</p>
-                
+
                 <p><strong>1. 定常解 $i_s(t)$</strong><br>
-                フェーザ法により、インピーダンスは $\dot{Z} = R - j\frac{1}{\omega C}$ となる。<br>
-                大きさを $|Z| = \sqrt{R^2 + (\frac{1}{\omega C})^2}$、偏角を $\phi = \tan^{-1}\frac{-1/\omega C}{R}$ とする（$\phi$ は負の値になる）。<br>
-                右辺の電源が $\sin$ 波であるため、電流も $\sin$ 波を基準として遅れ（この場合は進み）を考慮する。<br>
-                $i_s(t) = \frac{\sqrt{2}V}{|Z|} \sin(\omega t - \phi)$</p>
-                
+                    フェーザ法により、インピーダンスは $\dot{Z} = R - j\frac{1}{\omega C}$ となる。<br>
+                    大きさを $|Z| = \sqrt{R^2 + (\frac{1}{\omega C})^2}$、偏角を $\phi = \tan^{-1}\frac{-1/\omega C}{R}$
+                    とする（$\phi$ は負の値になる）。<br>
+                    右辺の電源が $\sin$ 波であるため、電流も $\sin$ 波を基準として遅れ（この場合は進み）を考慮する。<br>
+                    $i_s(t) = \frac{\sqrt{2}V}{|Z|} \sin(\omega t - \phi)$</p>
+
                 <p><strong>2. 過渡解 $i_f(t)$</strong><br>
-                同次微分方程式 $R\frac{di_f}{dt} + \frac{1}{C}i_f = 0$ の特性方程式 $Rp + \frac{1}{C} = 0$ より、$p = -\frac{1}{RC}$。<br>
-                よって、過渡解は $i_f(t) = A e^{-\frac{1}{RC}t}$ となる。</p>
-                
+                    同次微分方程式 $R\frac{di_f}{dt} + \frac{1}{C}i_f = 0$ の特性方程式 $Rp + \frac{1}{C} = 0$ より、$p =
+                    -\frac{1}{RC}$。<br>
+                    よって、過渡解は $i_f(t) = A e^{-\frac{1}{RC}t}$ となる。</p>
+
                 <p><strong>3. 一般解</strong><br>
-                $i(t) = \frac{\sqrt{2}V}{\sqrt{R^2 + (\frac{1}{\omega C})^2}} \sin(\omega t - \phi) + A e^{-\frac{1}{RC}t}$<br>
-                （※ $A$ は $t=0$ でのコンデンサの初期電荷などから決定される。）</p>
+                    $i(t) = \frac{\sqrt{2}V}{\sqrt{R^2 + (\frac{1}{\omega C})^2}} \sin(\omega t - \phi) + A
+                    e^{-\frac{1}{RC}t}$<br>
+                    （※ $A$ は $t=0$ でのコンデンサの初期電荷などから決定される。）</p>
             </div>
             <button class="btn-copy" onclick="generateAndShowImage('a11-area')">📸 画像を生成 (コピー用)</button>
         </div>
@@ -691,15 +776,17 @@
             const element = document.getElementById(elementId);
             const parentBox = element.closest('.answer-box');
             let originalDisplay = "";
-            
+
             if (parentBox && window.getComputedStyle(parentBox).display === 'none') {
                 originalDisplay = parentBox.style.display;
                 parentBox.style.display = 'block';
             }
 
             try {
-                // html-to-imageを使って画像化（文字化け対策済み）
-                const dataUrl = await htmlToImage.toPng(element, {
+                // MathJax描画(SVG)の完了を確実に待ってから撮影
+                await MathJax.typesetPromise();
+
+                const canvas = await htmlToImage.toPng(element, {
                     backgroundColor: "#ffffff",
                     pixelRatio: 2,
                     style: {
@@ -708,6 +795,7 @@
                     }
                 });
 
+                const dataUrl = canvas.toDataURL("image/png");
                 const modal = document.getElementById("image-modal");
                 const modalImg = document.getElementById("popup-image");
                 modalImg.src = dataUrl;
@@ -727,7 +815,7 @@
             document.getElementById("image-modal").style.display = "none";
         }
 
-        window.onclick = function(event) {
+        window.onclick = function (event) {
             const modal = document.getElementById("image-modal");
             if (event.target === modal) {
                 modal.style.display = "none";
@@ -736,4 +824,5 @@
     </script>
 
 </body>
+
 </html>
